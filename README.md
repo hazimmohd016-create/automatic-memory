@@ -4,7 +4,7 @@ Permainan web pembelajaran bertema kemasyarakatan (Pesta Komuniti Taman Harmoni)
 
 - Murid tekan **PUSING!** untuk memusing roda.
 - Bila roda berhenti, kad bergambar terus timbul: **Jujur**, **Rajin**, **Malas**, **Penakut** atau **Sombong**.
-- Di sebelah kad ada **Kotak Lakonan**: murid bina ayat dengan perkataan sifat itu (boleh semak ayat atau lihat contoh), kemudian tekan **Mula Lakonan** untuk melakonkannya dalam masa 30 saat.
+- Selepas kad terbalik, timbul arahan: **"Cuba bina ayat dan lakonkan dalam kotak lakonan!"**
 - Kad dipin pada **Papan Kenyataan**. Kumpul kelima-lima kad untuk skrin tahniah.
 - Ada kesan bunyi (boleh disenyapkan).
 

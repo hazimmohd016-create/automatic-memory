@@ -406,69 +406,33 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
 .pop .close-x { top: -4px; right: 0; }
 .pop .flip { width: min(360px, 80vw, calc((100dvh - 200px) * 2 / 3)); animation: popIn .45s cubic-bezier(.2,.9,.3,1.3); }
 
-/* acting box */
-.lakon {
-  width: 100%; max-width: 520px; background: var(--paper); border-radius: var(--r-lg); border: 6px solid var(--grape);
-  box-shadow: 0 8px 0 var(--grape-deep), 0 20px 40px rgba(0,0,0,.3); padding: 18px 20px 20px;
-  display: grid; gap: 14px; animation: popIn .5s .15s cubic-bezier(.2,.9,.3,1.3) both;
+/* instruction bubble */
+.ayat-pop {
+  position: relative; max-width: 460px; background: var(--paper); border-radius: 32px; border: 6px solid var(--grape);
+  box-shadow: 0 8px 0 var(--grape-deep), 0 20px 40px rgba(0,0,0,.3); padding: 26px 28px;
+  display: grid; justify-items: center; gap: 10px; text-align: center;
+  animation: bubbleIn .6s cubic-bezier(.2,.9,.3,1.4) both;
 }
-.lakon-head { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; line-height: 1.1; color: var(--grape); }
-.lakon-ask { margin: -6px 0 0; font-weight: 700; font-size: 1.05rem; line-height: 1.4; }
-.lk-word { color: var(--white); background: var(--awning-red); padding: 0 8px; border-radius: 8px; white-space: nowrap; }
-.lk-step { display: grid; gap: 8px; }
-.lk-label { display: flex; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; }
-.lk-label .num { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--sun); color: var(--ink); font-size: .95rem; }
-#lk-input {
-  width: 100%; resize: vertical; min-height: 64px; border-radius: 14px; border: 3px solid #D9CCF7; background: var(--white);
-  font: 700 1.05rem/1.4 var(--font-body); color: var(--ink); padding: 10px 12px;
+.ayat-pop::before {          /* tail pointing at the card */
+  content: ""; position: absolute; left: -26px; top: 50%; margin-top: -20px;
+  border: 20px solid transparent; border-right: 22px solid var(--grape); border-left: 0;
 }
-#lk-input:focus { outline: none; border-color: var(--grape); box-shadow: 0 0 0 4px rgba(122,63,224,.2); }
-.lk-row { display: flex; flex-wrap: wrap; gap: 8px; }
-.btn.sm { font-size: .95rem; padding: 9px 16px; }
-.lk-msg { margin: 0; min-height: 1.3em; font-weight: 800; }
-.lk-msg.ok { color: var(--good); }
-.lk-msg.no { color: var(--bad); }
-.lk-msg.hint { color: var(--ink-soft); font-weight: 700; background: var(--cream); border-radius: 10px; padding: 6px 10px; }
-
-.pentas {
-  position: relative; height: 190px; border-radius: 16px; overflow: hidden;
-  background: radial-gradient(ellipse 60% 70% at 50% 30%, #FFF3C4 0%, #F6D27A 35%, #5B2A86 75%, #2A1460 100%);
-  box-shadow: inset 0 -26px 0 #9A5F2C, inset 0 -30px 0 #6E3F17;
+@media (max-width: 760px) {
+  .pop { gap: 16px; }
+  .pop-card { display: contents; }
+  .pop-title { order: 1; }
+  .pop .flip { order: 2; width: min(330px, 78vw, calc((100dvh - 380px) * 2 / 3)); }
+  .ayat-pop { order: 3; padding: 16px 20px; }
+  #again-btn { order: 4; }
+  .ayat-pop::before { left: 50%; top: -26px; margin: 0 0 0 -20px; border: 20px solid transparent; border-bottom: 22px solid var(--grape); border-top: 0; }
 }
-.pentas-in { position: absolute; inset: 22px 12% 34px; display: grid; place-items: center; }
-.tape-box {
-  width: 100%; height: 100%; border: 4px dashed var(--sun); border-radius: 8px; display: grid; place-items: center; align-content: center; gap: 4px;
-  padding: 6px 10px; text-align: center; background: rgba(255,255,255,.35);
+.ayat-ic { font-size: clamp(2.6rem, 8vw, 4rem); line-height: 1; animation: bob 2.4s ease-in-out infinite; }
+.ayat-pop p {
+  margin: 0; font-family: var(--font-display); font-weight: 800; color: var(--ink);
+  font-size: clamp(1.5rem, 4.2vw, 2.3rem); line-height: 1.15; text-wrap: balance;
 }
-.lk-line { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; line-height: 1.25; color: var(--ink); overflow-wrap: anywhere; }
-.lk-timer {
-  font-family: var(--font-display); font-weight: 800; font-size: 2.4rem; line-height: 1; color: var(--awning-red);
-  font-variant-numeric: tabular-nums; text-shadow: 0 2px 0 var(--white);
-}
-.lk-timer.done { color: var(--good); font-size: 1.9rem; }
-.curtain {
-  position: absolute; top: 0; bottom: 0; width: 51%; z-index: 2; transition: transform 1.1s cubic-bezier(.6,0,.2,1);
-  background: repeating-linear-gradient(90deg, #C3261C 0 14px, #E2443A 14px 22px, #A81E15 22px 30px);
-  box-shadow: inset 0 -10px 18px rgba(0,0,0,.25);
-}
-.curtain.l { left: 0; border-radius: 0 0 40% 0; }
-.curtain.r { right: 0; border-radius: 0 0 0 40%; }
-.pentas.open .curtain.l { transform: translateX(-88%); }
-.pentas.open .curtain.r { transform: translateX(88%); }
-.valance {
-  position: absolute; left: 0; right: 0; top: 0; height: 22px; z-index: 3;
-  background:
-    radial-gradient(circle at 15px 4px, #8E1A12 14px, transparent 15px) 0 0 / 30px 22px repeat-x;
-}
-.pentas-sign {
-  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -40%); z-index: 4; margin: 0; white-space: nowrap;
-  background: var(--sun); color: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 1.1rem;
-  padding: 6px 16px; border-radius: 999px; border: 3px solid var(--white); box-shadow: 0 4px 0 rgba(0,0,0,.25);
-  transition: opacity .3s;
-}
-.pentas.open .pentas-sign { opacity: 0; pointer-events: none; }
-.pentas.acting .tape-box { animation: glowBox 1s ease-in-out infinite; }
-@keyframes glowBox { 50% { box-shadow: 0 0 0 6px rgba(255,200,58,.45); } }
+.ayat-pop b { color: var(--awning-red); }
+@keyframes bubbleIn { from { opacity: 0; transform: scale(.4) rotate(-6deg); } }
 
 .pop-title {
   margin: 0; padding: 6px 22px; border-radius: 999px; background: var(--cream); border: 4px solid var(--sun);
@@ -663,37 +627,10 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
       <button class="btn primary big" id="again-btn" type="button">Pusing Lagi ↻</button>
     </div>
 
-    <section class="lakon" aria-labelledby="lk-title">
-      <h3 class="lakon-head" id="lk-title"><span aria-hidden="true">🎭</span> Kotak Lakonan</h3>
-      <p class="lakon-ask">Cuba bina ayat dengan perkataan <b class="lk-word" id="lk-word">…</b> dan lakonkan dalam kotak lakonan!</p>
-
-      <div class="lk-step">
-        <label class="lk-label" for="lk-input"><span class="num">1</span> Bina ayat</label>
-        <textarea id="lk-input" rows="2" placeholder="Tulis ayat kamu di sini…"></textarea>
-        <div class="lk-row">
-          <button class="btn primary sm" id="lk-check" type="button">Semak ayat ✓</button>
-          <button class="btn ghost sm" id="lk-hint" type="button">💡 Contoh ayat</button>
-        </div>
-        <p class="lk-msg" id="lk-msg" aria-live="polite"></p>
-      </div>
-
-      <div class="lk-step">
-        <span class="lk-label"><span class="num">2</span> Lakonkan</span>
-        <div class="pentas" id="lk-stage">
-          <div class="pentas-in">
-            <div class="tape-box">
-              <p class="lk-line" id="lk-line"></p>
-              <div class="lk-timer" id="lk-timer" aria-live="polite">30</div>
-            </div>
-          </div>
-          <div class="curtain l" aria-hidden="true"></div>
-          <div class="curtain r" aria-hidden="true"></div>
-          <div class="valance" aria-hidden="true"></div>
-          <p class="pentas-sign" aria-hidden="true">Pentas sedia!</p>
-        </div>
-        <button class="btn warn sm" id="lk-start" type="button">▶ Mula Lakonan (30 saat)</button>
-      </div>
-    </section>
+    <div class="ayat-pop" id="ayat-pop" hidden>
+      <span class="ayat-ic" aria-hidden="true">🎭</span>
+      <p>Cuba bina ayat dan lakonkan dalam <b>kotak lakonan</b>!</p>
+    </div>
   </div>
 </dialog>
 
@@ -724,7 +661,7 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
   /* ---------------- content ---------------- */
   var SIFAT = {
     jujur: {
-      name: "Jujur", root: "jujur", contohAyat: "Amin jujur memulangkan dompet yang dijumpainya kepada Siti.", type: "baik", img: "images/jujur.jpg", color: "#2C7BE5", icon: "🤝",
+      name: "Jujur", type: "baik", img: "images/jujur.jpg", color: "#2C7BE5", icon: "🤝",
       alt: "Kad Jujur: seorang murid lelaki memulangkan dompet yang dijumpai kepada rakannya di kawasan sekolah.",
       maksud: "Bercakap benar, tidak menipu dan tidak mengambil hak orang lain.",
       contoh: [
@@ -737,7 +674,7 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
       bincang: "Pernahkah kamu menjumpai barang orang lain? Apakah yang kamu lakukan?"
     },
     rajin: {
-      name: "Rajin", root: "rajin", contohAyat: "Mei Ling rajin membersihkan kelas setiap pagi.", type: "baik", img: "images/rajin.jpg", color: "#1FA35E", icon: "🧹",
+      name: "Rajin", type: "baik", img: "images/rajin.jpg", color: "#1FA35E", icon: "🧹",
       alt: "Kad Rajin: seorang murid perempuan sedang mengelap meja di dalam kelas.",
       maksud: "Tekun dan bersungguh-sungguh melakukan kerja tanpa perlu disuruh.",
       contoh: [
@@ -750,7 +687,7 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
       bincang: "Apakah satu kerja yang kamu boleh bantu di rumah atau di taman perumahan kamu?"
     },
     malas: {
-      name: "Malas", root: "malas", contohAyat: "Abu malas membuat kerja rumah lalu tertidur di dalam kelas.", type: "buruk", img: "images/malas.jpg", color: "#F28C1B", icon: "😴",
+      name: "Malas", type: "buruk", img: "images/malas.jpg", color: "#F28C1B", icon: "😴",
       alt: "Kad Malas: seorang murid lelaki menguap dan mengantuk di hadapan buku yang terbuka.",
       maksud: "Tidak mahu berusaha dan suka menangguhkan kerja.",
       contoh: [
@@ -768,7 +705,7 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
       bincang: "Apakah yang akan berlaku jika semua penduduk malas membuang sampah?"
     },
     penakut: {
-      name: "Penakut", root: "takut", contohAyat: "Raju penakut apabila ternampak kucing hitam di bawah pokok.", type: "buruk", img: "images/penakut.jpg", color: "#8A3FD1", icon: "😨",
+      name: "Penakut", type: "buruk", img: "images/penakut.jpg", color: "#8A3FD1", icon: "😨",
       alt: "Kad Penakut: seorang murid lelaki menggigil ketakutan apabila ternampak seekor kucing hitam.",
       maksud: "Terlalu mudah berasa takut sehingga tidak berani mencuba atau bersuara.",
       contoh: [
@@ -786,7 +723,7 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
       bincang: "Bagaimanakah kamu boleh membantu rakan yang malu atau takut?"
     },
     sombong: {
-      name: "Sombong", root: "sombong", contohAyat: "Danial sombong kerana tidak membalas lambaian rakannya.", type: "buruk", img: "images/sombong.jpg", color: "#E0457B", icon: "😤",
+      name: "Sombong", type: "buruk", img: "images/sombong.jpg", color: "#E0457B", icon: "😤",
       alt: "Kad Sombong: seorang murid berpeluk tubuh dan memandang ke atas, tidak membalas lambaian rakannya."
     }
   };
@@ -957,84 +894,9 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
   /* ---------------- card dialog ---------------- */
   var dlg = $("card-dlg"), flip = $("flip");
 
-  /* ---------------- kotak lakonan ---------------- */
-  var lk = { key: null, timer: null, left: 30 };
-  var stage = $("lk-stage"), lkStart = $("lk-start"), lkMsg = $("lk-msg"), lkInput = $("lk-input");
-  var LK_SECONDS = 30;
-
-  function stopActing(resetStage) {
-    if (lk.timer) { clearInterval(lk.timer); lk.timer = null; }
-    stage.classList.remove("acting");
-    lkStart.textContent = "▶ Mula Lakonan (" + LK_SECONDS + " saat)";
-    if (resetStage) {
-      stage.classList.remove("open");
-      $("lk-timer").textContent = LK_SECONDS; $("lk-timer").className = "lk-timer";
-    }
-  }
-  function setLakon(s) {
-    lk.key = s ? s.name.toLowerCase() : null;
-    $("lk-word").textContent = s ? s.name : "…";
-    stopActing(true);
-    lkInput.value = ""; lkMsg.textContent = ""; lkMsg.className = "lk-msg";
-    $("lk-line").textContent = s ? "Lakonkan sifat " + s.name + "!" : "";
-  }
-  function currentSifat() { return lk.key ? SIFAT[lk.key] : null; }
-
-  $("lk-check").addEventListener("click", function () {
-    var s = currentSifat(); if (!s) return;
-    var text = lkInput.value.trim().replace(/\s+/g, " ");
-    var words = text ? text.split(" ").length : 0;
-    if (!text) { lkMsg.className = "lk-msg no"; lkMsg.textContent = "Tulis ayat dahulu."; lkInput.focus(); return; }
-    if (text.toLowerCase().indexOf(s.root) === -1) {
-      lkMsg.className = "lk-msg no"; lkMsg.textContent = "Ayat mesti ada perkataan \u201C" + s.name.toLowerCase() + "\u201D."; sfx.wrong(); return;
-    }
-    if (words < 4) { lkMsg.className = "lk-msg no"; lkMsg.textContent = "Panjangkan lagi ayat kamu."; sfx.wrong(); return; }
-    lkMsg.className = "lk-msg ok"; lkMsg.textContent = "Bagus! Ayat kamu hebat. Jom lakonkan!";
-    $("lk-line").textContent = text; sfx.correct(); confetti(60);
-  });
-  $("lk-hint").addEventListener("click", function () {
-    var s = currentSifat(); if (!s) return;
-    lkMsg.className = "lk-msg hint"; lkMsg.textContent = "Contoh: " + s.contohAyat;
-  });
-
-  function applause() {
-    if (!state.sound) return;
-    var c = audio(); if (!c) return;
-    var len = Math.floor(c.sampleRate * 0.05), buf = c.createBuffer(1, len, c.sampleRate), d = buf.getChannelData(0);
-    for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
-    for (var k = 0; k < 34; k++) {
-      var src = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
-      src.buffer = buf; f.type = "bandpass"; f.frequency.value = 900 + Math.random() * 1600;
-      g.gain.value = 0.35 + Math.random() * 0.3;
-      src.connect(f); f.connect(g); g.connect(c.destination);
-      src.start(c.currentTime + Math.random() * 1.6);
-    }
-  }
-
-  lkStart.addEventListener("click", function () {
-    if (lk.timer) { stopActing(false); return; }
-    audio();
-    lk.left = LK_SECONDS;
-    var t = $("lk-timer"); t.className = "lk-timer"; t.textContent = lk.left;
-    stage.classList.add("open", "acting");
-    lkStart.textContent = "■ Berhenti";
-    lk.timer = setInterval(function () {
-      lk.left -= 1;
-      if (lk.left > 0) {
-        t.textContent = lk.left;
-        if (lk.left <= 5) tone(880, 0, 0.08, "square", 0.05);
-        return;
-      }
-      stopActing(false);
-      t.textContent = "Syabas! 👏"; t.className = "lk-timer done";
-      lkStart.textContent = "↺ Lakon Semula";
-      applause(); confetti(160);
-    }, 1000);
-  });
-
   function openCard(key, fresh) {
     var s = SIFAT[key];
-    setLakon(fresh ? null : s);
+    $("ayat-pop").hidden = fresh;
     $("m-img").src = s.img; $("m-img").alt = s.alt;
     $("m-title").textContent = fresh ? "Kamu dapat kad…" : s.name;
     flip.classList.remove("wobble");
@@ -1047,7 +909,7 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
     setTimeout(function () {
       flip.classList.remove("wobble"); flip.classList.add("flipped"); sfx.reveal();
       $("m-title").textContent = s.name + "!";
-      setLakon(s);
+      setTimeout(function () { $("ayat-pop").hidden = false; }, reduceMotion ? 0 : 700);
       statusEl.textContent = "Kamu dapat kad " + s.name + "!";
       confetti(140, [s.color, "#FFC83A", "#FFFFFF", "#E8443A"]);
     }, t2);
@@ -1061,7 +923,6 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
   $("close-x").addEventListener("click", closeCard);
   dlg.addEventListener("click", function (e) { if (e.target === dlg) closeCard(); });
   dlg.addEventListener("close", function () {
-    stopActing(true);
     if (state.collected.length === ORDER.length && !state.celebrated) {
       state.celebrated = true; save();
       setTimeout(showFinish, 300);
