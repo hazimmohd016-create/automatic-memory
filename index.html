@@ -648,7 +648,7 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
       <img src="images/sombong.jpg" alt="Kad Sombong">
     </div>
     <div class="m-actions" style="justify-content:center">
-      <button class="btn ghost" id="keep-btn" type="button">Terus Bermain</button>
+      <button class="btn ghost" id="keep-btn" type="button">Tutup</button>
       <button class="btn primary" id="restart-btn" type="button">Main Semula ↺</button>
     </div>
   </div>
@@ -811,7 +811,18 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
   }
 
   /* ---------------- spinning ---------------- */
-  var rotation = 0, spinning = false;
+  var rotation = 0, spinning = false, lastKey = null;
+
+  // Pick a card the pupil has not had yet. Once all five are out, start a new round
+  // (board cleared) and still avoid repeating the card that just came up.
+  function pickKey() {
+    var left = ORDER.filter(function (k) { return state.collected.indexOf(k) === -1; });
+    if (!left.length) {
+      resetGame();
+      left = ORDER.filter(function (k) { return k !== lastKey; });
+    }
+    return left[Math.floor(Math.random() * left.length)];
+  }
   var wrap = $("wheel-wrap"), spinBtn = $("spin-btn"), statusEl = $("status"), pointer = $("pointer");
 
   function setRotor(deg) { rotor.setAttribute("transform", "rotate(" + deg + " " + CX + " " + CY + ")"); }
@@ -830,7 +841,10 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
     spinBtn.disabled = true; wrap.classList.add("spinning");
     statusEl.textContent = "Roda sedang berpusing…";
 
-    var idx = Math.floor(Math.random() * SEGMENTS.length);
+    var key = pickKey();
+    var slots = [];
+    SEGMENTS.forEach(function (k, i) { if (k === key) slots.push(i); });
+    var idx = slots[Math.floor(Math.random() * slots.length)];
     var landAt = idx * SEG + SEG / 2 + (Math.random() - 0.5) * SEG * 0.7;   // wheel angle to bring under the pointer
     var target = ((360 - landAt) % 360 + 360) % 360;
     var cur = ((rotation % 360) + 360) % 360;
@@ -854,7 +868,7 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
   }
 
   function finishSpin() {
-    var key = keyUnderPointer(rotation);
+    var key = keyUnderPointer(rotation); lastKey = key;
     statusEl.textContent = "Roda berhenti!";
     setTimeout(function () {
       spinning = false; spinBtn.disabled = false; wrap.classList.remove("spinning");
