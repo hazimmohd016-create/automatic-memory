@@ -180,21 +180,33 @@ button.chip:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--grape
   position: absolute; left: 50%; top: -14px; width: 54px; height: 66px; margin-left: -27px; z-index: 3;
   transform-origin: 50% 22%; filter: drop-shadow(0 4px 0 rgba(42, 20, 96, .35));
 }
+.wheel-wrap { container-type: inline-size; }
 .spin-btn {
-  position: absolute; left: 50%; top: 50%; width: 26%; aspect-ratio: 1; transform: translate(-50%, -50%);
-  border-radius: 50%; border: 6px solid var(--white); z-index: 4;
-  background: radial-gradient(circle at 35% 30%, #FFE27A, var(--sun) 55%, #F0A400);
-  box-shadow: 0 6px 0 #C47F00, 0 10px 22px rgba(0,0,0,.25);
-  font-family: var(--font-display); font-weight: 800; color: var(--ink);
-  font-size: clamp(.95rem, 3.6vw, 1.45rem); line-height: 1; letter-spacing: .02em;
-  display: grid; place-items: center; transition: transform .12s, box-shadow .12s;
+  position: absolute; left: 50%; top: 50%; width: 24%; aspect-ratio: 1; transform: translate(-50%, -50%);
+  border-radius: 50%; border: 5px solid var(--white); z-index: 4; padding: 0; overflow: hidden;
+  background: radial-gradient(circle at 50% 30%, #FF7A6E 0%, var(--awning-red) 55%, #B8231A 100%);
+  box-shadow: 0 6px 0 #8E1A12, 0 0 0 5px var(--ink), 0 12px 24px rgba(0,0,0,.3);
+  display: grid; place-items: center; align-content: center; gap: 1cqw;
+  transition: transform .12s, box-shadow .12s;
 }
-.spin-btn:hover { transform: translate(-50%, -50%) scale(1.05); }
-.spin-btn:active { transform: translate(-50%, -46%) scale(1); box-shadow: 0 2px 0 #C47F00; }
-.spin-btn[disabled] { cursor: wait; filter: saturate(.7); }
-.spin-btn small { display: block; font-family: var(--font-body); font-size: .5em; font-weight: 800; color: var(--ink-soft); margin-top: 2px; }
+.spin-btn::before {           /* glossy highlight */
+  content: ""; position: absolute; left: 16%; right: 16%; top: 7%; height: 38%; border-radius: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,.7), rgba(255,255,255,0)); pointer-events: none;
+}
+.spin-btn .spin-ic { position: relative; width: 5.8cqw; height: 5.8cqw; display: block; }
+.spin-btn .spin-word {
+  position: relative; display: block;
+  font-family: var(--font-display); font-weight: 800; font-size: 5cqw; line-height: .9; letter-spacing: .03em;
+  color: var(--white);
+  text-shadow: 0 .45cqw 0 #8E1A12, 0 0 .3cqw rgba(0,0,0,.25);
+}
+.spin-btn:hover { transform: translate(-50%, -50%) scale(1.06); }
+.spin-btn:hover .spin-ic { animation: turn .8s ease-in-out; }
+@keyframes turn { to { transform: rotate(360deg); } }
+.spin-btn:active { transform: translate(-50%, -47%) scale(1); box-shadow: 0 2px 0 #8E1A12, 0 0 0 5px var(--ink), 0 6px 12px rgba(0,0,0,.3); }
+.spin-btn[disabled] { cursor: wait; filter: saturate(.6) brightness(.95); }
 .wheel-wrap:not(.spinning) .spin-btn { animation: pulse 1.8s ease-in-out infinite; }
-@keyframes pulse { 50% { box-shadow: 0 6px 0 #C47F00, 0 0 0 12px rgba(255, 200, 58, .35); } }
+@keyframes pulse { 50% { box-shadow: 0 6px 0 #8E1A12, 0 0 0 5px var(--ink), 0 0 0 16px rgba(255, 200, 58, .55); } }
 
 .bulb { fill: #FFF3B0; }
 .wheel-wrap .bulb { animation: blink 1.2s steps(1) infinite; }
@@ -485,7 +497,7 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
             <g id="rotor"></g>
             <circle cx="200" cy="200" r="172" fill="none" stroke="#FFFFFF" stroke-width="5"/>
           </svg>
-          <button class="spin-btn" id="spin-btn" type="button" aria-describedby="status">PUSING!<small>tekan aku</small></button>
+          <button class="spin-btn" id="spin-btn" type="button" aria-label="Pusing roda"><svg class="spin-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.6-5.9" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round"/><path d="M20.5 3.2v5.2h-5.2" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="spin-word">PUSING</span></button>
         </div>
         <p class="status" id="status" aria-live="polite">Tekan PUSING!</p>
       </div>
@@ -746,7 +758,7 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
     var ic = el("text", { x: CX, y: CY - R + 20, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 22 }, g);
     ic.textContent = s.icon;
     var label = el("text", { "class": "seg-label", x: 0, y: 0, "text-anchor": "middle", "dominant-baseline": "central",
-      "font-size": s.name.length > 5 ? 16 : 20, transform: "translate(" + CX + " " + (CY - R * 0.55) + ") rotate(-90)" }, g);
+      "font-size": s.name.length > 5 ? 16 : 20, transform: "translate(" + CX + " " + (CY - R * 0.585) + ") rotate(-90)" }, g);
     label.textContent = s.name.toUpperCase();
   });
   el("circle", { cx: CX, cy: CY, r: 30, fill: "#2A1460" }, rotor);
