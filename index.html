@@ -383,6 +383,14 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
 }
 .discuss { margin: 0; font-size: .95rem; }
 .m-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.pop { position: relative; display: grid; justify-items: center; gap: 18px; width: min(460px, 100%); padding-top: 8px; }
+.pop .close-x { top: -4px; right: 0; }
+.pop .flip { width: min(400px, 84vw, calc((100dvh - 200px) * 2 / 3)); animation: popIn .45s cubic-bezier(.2,.9,.3,1.3); }
+.pop-title {
+  margin: 0; padding: 6px 22px; border-radius: 999px; background: var(--cream); border: 4px solid var(--sun);
+  font-family: var(--font-display); font-weight: 800; font-size: clamp(1.4rem, 5vw, 2rem); line-height: 1.2; text-align: center;
+}
+.btn.big { font-size: 1.25rem; padding: 14px 30px; }
 
 /* ---------- finish dialog ---------- */
 .finish-card {
@@ -450,11 +458,9 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
       <h1>Putaran <span class="magic">Ajaib</span> Sifat</h1>
     </div>
     <p class="tagline">
-      <span class="where">PESTA KOMUNITI · TAMAN HARMONI</span><br>
-      Pusing roda, buka kad sifat, dan kenali sifat terpuji yang membina masyarakat yang harmoni.
+      <span class="where">PESTA KOMUNITI · TAMAN HARMONI</span>
     </p>
     <div class="toolbar">
-      <span class="chip" id="score-chip" aria-live="polite"><span class="star" aria-hidden="true">★</span> <span id="score">0</span> bintang · <span class="lvl" id="level">Jiran Baharu</span></span>
       <button class="chip" id="sound-btn" type="button" aria-pressed="true">🔊 Bunyi: Hidup</button>
     </div>
   </header>
@@ -479,12 +485,7 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
           </svg>
           <button class="spin-btn" id="spin-btn" type="button" aria-describedby="status">PUSING!<small>tekan aku</small></button>
         </div>
-        <p class="status" id="status" aria-live="polite">Sedia? Tekan butang kuning untuk memusing roda!</p>
-        <ol class="how">
-          <li>Tekan PUSING! dan tunggu roda berhenti.</li>
-          <li>Teka: sifat terpuji atau tidak terpuji?</li>
-          <li>Kumpul keempat-empat kad di papan kenyataan.</li>
-        </ol>
+        <p class="status" id="status" aria-live="polite">Tekan PUSING!</p>
       </div>
     </section>
 
@@ -498,7 +499,7 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
       </div>
       <div class="slots" id="slots"></div>
       <div class="board-foot">
-        <p class="note">Tekan kad yang sudah dikumpul untuk membacanya semula.</p>
+        <p class="note">Tekan kad untuk lihat semula.</p>
         <button class="btn ghost" id="reset-btn" type="button">↺ Mula Semula</button>
       </div>
     </section>
@@ -565,41 +566,16 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
 
 <!-- card reveal dialog -->
 <dialog class="modal" id="card-dlg" aria-labelledby="m-title">
-  <div class="modal-card">
+  <div class="pop">
     <button class="close-x" id="close-x" type="button" aria-label="Tutup kad">×</button>
+    <p class="pop-title" id="m-title">Kamu dapat kad…</p>
     <div class="flip" id="flip">
       <div class="flip-inner">
         <div class="face front"><img id="m-img" src="images/jujur.jpg" alt=""></div>
         <div class="face back" aria-hidden="true"><span class="q">?</span><p>KAD SIFAT</p></div>
       </div>
     </div>
-    <div class="panel">
-      <p class="eyebrow" id="m-eyebrow">Kad kamu</p>
-      <h2 id="m-title">…</h2>
-      <span class="pill" id="m-pill" hidden></span>
-
-      <div class="quiz" id="m-quiz">
-        <p class="ask" id="m-ask">Teka dahulu! Sifat ini ialah…</p>
-        <div class="choices">
-          <button class="choice" type="button" data-ans="baik"><span class="ic" aria-hidden="true">👍</span>Sifat Terpuji</button>
-          <button class="choice" type="button" data-ans="buruk"><span class="ic" aria-hidden="true">👎</span>Sifat Tidak Terpuji</button>
-        </div>
-        <p class="feedback" id="m-feedback" aria-live="polite"></p>
-      </div>
-
-      <div class="info" id="m-info" hidden>
-        <div class="info-block"><h3>Maksud</h3><p id="m-maksud"></p></div>
-        <div class="info-block"><h3>Contoh dalam masyarakat</h3><ul id="m-contoh"></ul></div>
-        <div class="info-grid" id="m-extra"></div>
-        <p class="cogan" id="m-cogan"></p>
-        <p class="discuss"><b>Bincang bersama kelas:</b> <span id="m-bincang"></span></p>
-      </div>
-
-      <div class="m-actions">
-        <button class="btn ghost" id="speak-btn" type="button" hidden>🔈 Dengar penerangan</button>
-        <button class="btn primary" id="again-btn" type="button">Pusing Lagi ↻</button>
-      </div>
-    </div>
+    <button class="btn primary big" id="again-btn" type="button">Pusing Lagi ↻</button>
   </div>
 </dialog>
 
@@ -607,15 +583,14 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
 <dialog class="modal" id="done-dlg" aria-labelledby="done-title">
   <div class="finish-card">
     <div class="medal" aria-hidden="true">🏅</div>
-    <h2 id="done-title">Tahniah, Jiran Mithali!</h2>
-    <p>Kamu sudah mengumpul keempat-empat kad sifat. Amalkan sifat <b>jujur</b> dan <b>rajin</b>, dan jauhi sifat <b>malas</b> dan <b>penakut</b> supaya Taman Harmoni sentiasa aman dan bersatu.</p>
+    <h2 id="done-title">Tahniah!</h2>
+    <p>Semua 4 kad sudah dikumpul.</p>
     <div class="mini-cards">
       <img src="images/jujur.jpg" alt="Kad Jujur">
       <img src="images/rajin.jpg" alt="Kad Rajin">
       <img src="images/malas.jpg" alt="Kad Malas">
       <img src="images/penakut.jpg" alt="Kad Penakut">
     </div>
-    <p><b id="done-score">0</b> bintang dikumpul.</p>
     <div class="m-actions" style="justify-content:center">
       <button class="btn ghost" id="keep-btn" type="button">Terus Bermain</button>
       <button class="btn primary" id="restart-btn" type="button">Main Semula ↺</button>
@@ -702,12 +677,11 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
 
   /* ---------------- state ---------------- */
   var STORE_KEY = "putaran-ajaib-sifat-v1";
-  var state = { collected: [], stars: 0, celebrated: false, sound: true };
+  var state = { collected: [], celebrated: false, sound: true };
   try {
     var saved = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
     if (saved && typeof saved === "object") {
       state.collected = Array.isArray(saved.collected) ? saved.collected.filter(function (k) { return SIFAT[k]; }) : [];
-      state.stars = Number(saved.stars) || 0;
       state.celebrated = !!saved.celebrated;
       state.sound = saved.sound !== false;
     }
@@ -821,7 +795,7 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
 
   function finishSpin() {
     var key = keyUnderPointer(rotation);
-    statusEl.textContent = "Roda berhenti! Jom buka kad kamu.";
+    statusEl.textContent = "Roda berhenti!";
     setTimeout(function () {
       spinning = false; spinBtn.disabled = false; wrap.classList.remove("spinning");
       var isNew = state.collected.indexOf(key) === -1;
@@ -843,7 +817,7 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
         node.className = "slot got" + (key === newKey ? " new" : "");
         node.style.setProperty("--tilt", (i % 2 ? 2.5 : -2.5) + "deg");
         node.setAttribute("aria-label", "Buka semula kad " + s.name);
-        node.innerHTML = '<img alt="" src="' + s.img + '"><span class="tag ' + s.type + '">' + (s.type === "baik" ? "Terpuji" : "Tidak terpuji") + "</span>";
+        node.innerHTML = '<img alt="" src="' + s.img + '">';
         node.addEventListener("click", function () { openCard(key, false); });
       } else {
         node = document.createElement("div");
@@ -856,129 +830,28 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
     $("progress").style.width = (state.collected.length / ORDER.length * 100) + "%";
   }
 
-  function levelName(stars) {
-    if (stars >= 40) return "Jiran Mithali";
-    if (stars >= 20) return "Jiran Prihatin";
-    return "Jiran Baharu";
-  }
-  function renderScore(bump) {
-    $("score").textContent = state.stars;
-    $("level").textContent = levelName(state.stars);
-    if (bump) {
-      var chip = $("score-chip");
-      chip.classList.remove("bump"); void chip.offsetWidth; chip.classList.add("bump");
-    }
-  }
 
   /* ---------------- card dialog ---------------- */
-  var dlg = $("card-dlg"), flip = $("flip"), currentKey = null, answered = false;
-  var choiceBtns = Array.prototype.slice.call(dlg.querySelectorAll(".choice"));
-
-  function list(ul, items) {
-    ul.innerHTML = "";
-    items.forEach(function (t) { var li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
-  }
-  function block(cls, title, items) {
-    var d = document.createElement("div"); d.className = "info-block " + cls;
-    var h = document.createElement("h3"); h.textContent = title; d.appendChild(h);
-    var ul = document.createElement("ul"); list(ul, items); d.appendChild(ul);
-    return d;
-  }
-
-  function fillInfo(s) {
-    $("m-maksud").textContent = s.maksud;
-    list($("m-contoh"), s.contoh);
-    var extra = $("m-extra"); extra.innerHTML = "";
-    if (s.type === "baik") {
-      extra.appendChild(block("good", "Kebaikannya kepada masyarakat", s.kesan));
-    } else {
-      extra.appendChild(block("bad", "Kesannya kepada masyarakat", s.kesan));
-      extra.appendChild(block("fix", "Cara mengatasinya", s.atasi));
-    }
-    $("m-cogan").textContent = s.cogan;
-    $("m-bincang").textContent = s.bincang;
-  }
-
-  function showPill(s) {
-    var pill = $("m-pill");
-    pill.className = "pill " + s.type;
-    pill.textContent = s.type === "baik" ? "✓ Sifat Terpuji" : "✗ Sifat Tidak Terpuji";
-    pill.hidden = false;
-  }
-
-  function revealInfo() {
-    $("m-info").hidden = false;
-    if ("speechSynthesis" in window) $("speak-btn").hidden = false;
-  }
+  var dlg = $("card-dlg"), flip = $("flip");
 
   function openCard(key, fresh) {
     var s = SIFAT[key];
-    currentKey = key; answered = !fresh;
     $("m-img").src = s.img; $("m-img").alt = s.alt;
-    $("m-title").textContent = s.name;
-    $("m-eyebrow").textContent = fresh ? "Kamu dapat kad" : "Kad dalam koleksi";
-    $("m-ask").innerHTML = "Teka dahulu! Sifat <b></b> ialah…";
-    $("m-ask").querySelector("b").textContent = s.name;
-    $("m-feedback").textContent = ""; $("m-feedback").className = "feedback";
-    choiceBtns.forEach(function (bt) { bt.disabled = false; bt.classList.remove("right", "wrongpick"); });
-    $("m-pill").hidden = true; $("m-info").hidden = true; $("speak-btn").hidden = true;
-    fillInfo(s);
-
-    if (fresh) {
-      $("m-quiz").hidden = false;
-      dlg.classList.remove("revealed");
-      flip.classList.remove("flipped", "wobble");
-      $("m-title").textContent = "…";
-    } else {
-      $("m-quiz").hidden = true;
-      showPill(s); revealInfo();
-      dlg.classList.add("revealed");
-      flip.classList.add("flipped");
-    }
-
+    $("m-title").textContent = fresh ? "Kamu dapat kad…" : s.name;
+    flip.classList.remove("wobble");
+    if (fresh) flip.classList.remove("flipped"); else flip.classList.add("flipped");
     if (!dlg.open) dlg.showModal();
     $("again-btn").focus();
-
-    if (fresh) {
-      var t1 = reduceMotion ? 0 : 450, t2 = reduceMotion ? 50 : 1050, t3 = reduceMotion ? 100 : 1700;
-      setTimeout(function () { flip.classList.add("wobble"); }, t1);
-      setTimeout(function () { flip.classList.remove("wobble"); flip.classList.add("flipped"); sfx.reveal(); }, t2);
-      setTimeout(function () {
-        $("m-title").textContent = s.name;
-        dlg.classList.add("revealed");
-        statusEl.textContent = "Kamu dapat kad " + s.name + "!";
-        confetti(70, [s.color, "#FFC83A", "#FFFFFF"]);
-        choiceBtns[0].focus();
-      }, t3);
-    }
+    if (!fresh) return;
+    var t1 = reduceMotion ? 0 : 300, t2 = reduceMotion ? 50 : 850;
+    setTimeout(function () { flip.classList.add("wobble"); }, t1);
+    setTimeout(function () {
+      flip.classList.remove("wobble"); flip.classList.add("flipped"); sfx.reveal();
+      $("m-title").textContent = s.name + "!";
+      statusEl.textContent = "Kamu dapat kad " + s.name + "!";
+      confetti(140, [s.color, "#FFC83A", "#FFFFFF", "#E8443A"]);
+    }, t2);
   }
-
-  function answer(choice) {
-    if (answered || !currentKey) return;
-    answered = true;
-    var s = SIFAT[currentKey], ok = choice === s.type, fb = $("m-feedback");
-    choiceBtns.forEach(function (bt) {
-      bt.disabled = true;
-      if (bt.getAttribute("data-ans") === s.type) bt.classList.add("right");
-      else if (bt.getAttribute("data-ans") === choice) bt.classList.add("wrongpick");
-    });
-    var kind = s.type === "baik" ? "sifat terpuji" : "sifat tidak terpuji";
-    if (ok) {
-      state.stars += 10; save(); renderScore(true);
-      fb.className = "feedback ok";
-      fb.textContent = "Betul! +10 bintang. " + s.name + " ialah " + kind + ".";
-      sfx.correct(); confetti(140);
-    } else {
-      fb.className = "feedback no";
-      fb.textContent = "Hampir betul! Sebenarnya " + s.name + " ialah " + kind + ". Baca penerangan di bawah.";
-      sfx.wrong();
-    }
-    showPill(s); revealInfo();
-  }
-
-  choiceBtns.forEach(function (bt) {
-    bt.addEventListener("click", function () { answer(bt.getAttribute("data-ans")); });
-  });
 
   function closeCard() { if (dlg.open) dlg.close(); }
   $("again-btn").addEventListener("click", function () {
@@ -988,7 +861,6 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
   $("close-x").addEventListener("click", closeCard);
   dlg.addEventListener("click", function (e) { if (e.target === dlg) closeCard(); });
   dlg.addEventListener("close", function () {
-    if ("speechSynthesis" in window) speechSynthesis.cancel();
     if (state.collected.length === ORDER.length && !state.celebrated) {
       state.celebrated = true; save();
       setTimeout(showFinish, 300);
@@ -997,27 +869,10 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
     }
   });
 
-  /* ---------------- read aloud ---------------- */
-  $("speak-btn").addEventListener("click", function () {
-    if (!("speechSynthesis" in window) || !currentKey) return;
-    var s = SIFAT[currentKey];
-    var parts = [s.name + ".", s.type === "baik" ? "Sifat terpuji." : "Sifat tidak terpuji.", "Maksudnya, " + s.maksud,
-      "Contoh dalam masyarakat. " + s.contoh.join(" ")];
-    if (s.atasi) parts.push("Cara mengatasinya. " + s.atasi.join(" "));
-    parts.push(s.cogan.replace(/[“”]/g, ""));
-    speechSynthesis.cancel();
-    var u = new SpeechSynthesisUtterance(parts.join(" "));
-    var voices = speechSynthesis.getVoices();
-    var v = voices.filter(function (x) { return /^ms/i.test(x.lang); })[0] || voices.filter(function (x) { return /^id/i.test(x.lang); })[0];
-    u.lang = v ? v.lang : "ms-MY"; if (v) u.voice = v;
-    u.rate = 0.9;
-    speechSynthesis.speak(u);
-  });
 
   /* ---------------- finish ---------------- */
   var doneDlg = $("done-dlg");
   function showFinish() {
-    $("done-score").textContent = state.stars;
     doneDlg.showModal();
     $("keep-btn").focus();
     sfx.finish();
@@ -1032,9 +887,9 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
   /* ---------------- reset (two taps, no confirm()) ---------------- */
   var resetBtn = $("reset-btn"), resetArmed = null;
   function resetGame() {
-    state.collected = []; state.stars = 0; state.celebrated = false; save();
-    renderBoard(null); renderScore(false);
-    statusEl.textContent = "Permainan baharu! Tekan PUSING! untuk mula.";
+    state.collected = []; state.celebrated = false; save();
+    renderBoard(null);
+    statusEl.textContent = "Tekan PUSING!";
   }
   resetBtn.addEventListener("click", function () {
     if (resetArmed) {
@@ -1098,7 +953,7 @@ dialog.modal::backdrop { background: rgba(42, 20, 96, .62); backdrop-filter: blu
   });
 
   ORDER.forEach(function (k) { var im = new Image(); im.src = SIFAT[k].img; });  // preload cards
-  setRotor(0); renderBoard(null); renderScore(false); renderSound();
+  setRotor(0); renderBoard(null); renderSound();
 })();
 </script>
 </body>
