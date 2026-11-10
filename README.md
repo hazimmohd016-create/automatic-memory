@@ -3,8 +3,8 @@
 Permainan web pembelajaran bertema kemasyarakatan (Pesta Komuniti Taman Harmoni).
 
 - Murid tekan **PUSING!** untuk memusing roda.
-- Bila roda berhenti, kad bergambar terus timbul: **Jujur**, **Rajin**, **Malas** atau **Penakut**.
-- Kad dipin pada **Papan Kenyataan**. Kumpul keempat-empat kad untuk skrin tahniah.
+- Bila roda berhenti, kad bergambar terus timbul: **Jujur**, **Rajin**, **Malas**, **Penakut** atau **Sombong**.
+- Kad dipin pada **Papan Kenyataan**. Kumpul kelima-lima kad untuk skrin tahniah.
 - Ada kesan bunyi (boleh disenyapkan).
 
 ## Cara guna
