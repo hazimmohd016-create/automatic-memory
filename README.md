@@ -12,3 +12,8 @@ Permainan web pembelajaran bertema kemasyarakatan (Pesta Komuniti Taman Harmoni)
 
 Buka `index.html` dalam pelayar web (Chrome/Edge disyorkan). Pastikan folder `images/` berada bersama fail tersebut.
 Kemajuan murid disimpan dalam pelayar; tekan **Mula Semula** dua kali untuk set semula.
+
+## Versi satu fail
+
+`putaran-ajaib-sifat.html` ialah versi yang sama dengan semua gambar dimasukkan ke dalam fail itu sendiri.
+Fail ini boleh dibuka terus, dihantar kepada orang lain, atau dimuat naik ke mana-mana hos laman web tanpa folder `images/`.
