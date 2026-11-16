@@ -32,7 +32,7 @@
   --seg-rajin: #1FA35E;
   --seg-malas: #F28C1B;
   --seg-penakut: #8A3FD1;
-  --seg-sombong: #E0457B;
+  --seg-prihatin: #E0457B;
   --awning-red: #E8443A;
   --white: #FFFFFF;
   --shadow: rgba(42, 20, 96, 0.22);
@@ -486,7 +486,7 @@ dialog.modal[open] { display: grid; place-items: center; }
             <path d="M27 64 L4 18 A24 24 0 1 1 50 18 Z" fill="#E8443A" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round"/>
             <circle cx="27" cy="22" r="8" fill="#FFFFFF"/>
           </svg>
-          <svg class="wheel-svg" viewBox="0 0 400 400" id="wheel-svg" role="img" aria-label="Roda dengan sepuluh bahagian: Jujur, Rajin, Malas, Penakut dan Sombong">
+          <svg class="wheel-svg" viewBox="0 0 400 400" id="wheel-svg" role="img" aria-label="Roda dengan sepuluh bahagian: Rajin, Jujur, Malas, Penakut dan Prihatin">
             <circle cx="200" cy="200" r="198" fill="#2A1460"/>
             <circle cx="200" cy="200" r="190" fill="#7A3FE0"/>
             <g id="bulbs"></g>
@@ -602,11 +602,11 @@ dialog.modal[open] { display: grid; place-items: center; }
     <h2 id="done-title">Tahniah!</h2>
     <p>Semua 5 kad sudah dikumpul.</p>
     <div class="mini-cards">
-      <img src="images/jujur.jpg" alt="Kad Jujur">
       <img src="images/rajin.jpg" alt="Kad Rajin">
+      <img src="images/jujur.jpg" alt="Kad Jujur">
       <img src="images/malas.jpg" alt="Kad Malas">
       <img src="images/penakut.jpg" alt="Kad Penakut">
-      <img src="images/sombong.jpg" alt="Kad Sombong">
+      <img src="images/prihatin.jpg" alt="Kad Prihatin">
     </div>
     <div class="m-actions" style="justify-content:center">
       <button class="btn ghost" id="keep-btn" type="button">Tutup</button>
@@ -685,12 +685,12 @@ dialog.modal[open] { display: grid; place-items: center; }
       cogan: "“Berani kerana benar, takut kerana salah.”",
       bincang: "Bagaimanakah kamu boleh membantu rakan yang malu atau takut?"
     },
-    sombong: {
-      name: "Sombong", type: "buruk", img: "images/sombong.jpg", color: "#E0457B", icon: "😤",
-      alt: "Kad Sombong: seorang murid berpeluk tubuh dan memandang ke atas, tidak membalas lambaian rakannya."
+    prihatin: {
+      name: "Prihatin", type: "baik", img: "images/prihatin.jpg", color: "#E0457B", icon: "💞",
+      alt: "Kad Prihatin: hati merah jambu besar dikelilingi hati-hati kecil."
     }
   };
-  var ORDER = ["jujur", "rajin", "malas", "penakut", "sombong"];
+  var ORDER = ["rajin", "jujur", "malas", "penakut", "prihatin"];   // also the spin order
   var SEGMENTS = ORDER.concat(ORDER);           // 10 slices, each card twice
   var SEG = 360 / SEGMENTS.length;
   var CX = 200, CY = 200, R = 172;
@@ -776,15 +776,12 @@ dialog.modal[open] { display: grid; place-items: center; }
   /* ---------------- spinning ---------------- */
   var rotation = 0, spinning = false, lastKey = null;
 
-  // Pick a card the pupil has not had yet. Once all five are out, start a new round
-  // (board cleared) and still avoid repeating the card that just came up.
+  // Fixed turn order: spin 1 = Rajin, 2 = Jujur, 3 = Malas, 4 = Penakut, 5 = Prihatin.
+  // After all five are out, the next spin starts a new round from Rajin again.
   function pickKey() {
     var left = ORDER.filter(function (k) { return state.collected.indexOf(k) === -1; });
-    if (!left.length) {
-      resetGame();
-      left = ORDER.filter(function (k) { return k !== lastKey; });
-    }
-    return left[Math.floor(Math.random() * left.length)];
+    if (!left.length) { resetGame(); left = ORDER.slice(); }
+    return left[0];
   }
   var wrap = $("wheel-wrap"), spinBtn = $("spin-btn"), statusEl = $("status"), pointer = $("pointer");
 
