@@ -7,38 +7,45 @@
 <meta name="description" content="Permainan roda sifat untuk murid: pusing roda, dapatkan kad sifat Jujur, Rajin, Malas atau Penakut, dan pelajari sifat terpuji dalam masyarakat.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Creepster&family=Nunito:wght@400;600;700;800&display=swap">
 <style>
-/* Layout: one 16:9 slide (1600x900, scaled to fit the screen). Pesta Komuniti Taman Harmoni — a carnival stall holding the wheel beside the
-   neighbourhood notice board where won cards get pinned; a kampung street closes the page. */
+/* Layout: one 16:9 slide (1600x900, scaled to fit the screen). Malam Misteri di Taman Harmoni: a night-time
+   community fair. A lantern-lit stall holds the wheel beside the neighbourhood notice board, and a moonlit kampung street with fog closes the slide. */
 :root {
-  --sky-top: #6EC1F5;
-  --sky-low: #D9F1FF;
-  --ink: #2A1460;          /* deep purple-navy, same as the card titles */
-  --ink-soft: #5B4B86;
-  --grape: #7A3FE0;        /* purple card border */
-  --grape-deep: #5A25B8;
-  --cream: #FFF7C9;        /* title cloud fill */
-  --sun: #FFC83A;
-  --paper: #FFFDF6;
-  --cork: #C99863;
-  --cork-dark: #A97A48;
-  --wood: #7B4B22;
+  --sky-top: #070617;
+  --sky-mid: #1A1240;
+  --sky-low: #2E1E52;
+  --ink: #1A0F33;          /* dark text on parchment */
+  --ink-soft: #4A3A66;
+  --grape: #5B2A9E;        /* deep purple frame */
+  --grape-deep: #2B1257;
+  --cream: #EADFBC;        /* parchment */
+  --sun: #F2B53A;          /* lantern gold */
+  --paper: #EFE3C4;
+  --cork: #5E4128;
+  --cork-dark: #3F2A18;
+  --wood: #2E1C10;
   --good: #17955A;
   --good-soft: #DDF6E8;
-  --bad: #D9472F;
+  --bad: #B3203A;
   --bad-soft: #FDE5DF;
-  --seg-jujur: #2C7BE5;
-  --seg-rajin: #1FA35E;
-  --seg-malas: #F28C1B;
-  --seg-penakut: #8A3FD1;
-  --seg-prihatin: #E0457B;
-  --awning-red: #E8443A;
+  --seg-jujur: #1F4FA8;
+  --seg-rajin: #1D7A4A;
+  --seg-malas: #B5561A;
+  --seg-penakut: #5B2A9E;
+  --seg-prihatin: #9E2A5B;
+  --awning-red: #7E1A2C;
+  --awning-alt: #1C1238;
+  --glow: #7CFFB2;         /* eerie green glow */
+  --moon: #FFF4C8;
+  --mist: rgba(200, 190, 255, .16);
+  --night-panel: #150E2E;
   --white: #FFFFFF;
-  --shadow: rgba(42, 20, 96, 0.22);
-  --letterbox: #1B0E3F;
+  --shadow: rgba(0, 0, 0, 0.5);
+  --letterbox: #04030C;
 
   --font-display: "Baloo 2", "Nunito", "Trebuchet MS", system-ui, sans-serif;
+  --font-eerie: "Creepster", "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
   --font-body: "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
 
   --r-lg: 28px;
@@ -55,9 +62,9 @@ body {
 }
 /* the 16:9 slide: fixed design size, scaled by script to fit the window */
 #slide {
-  position: absolute; left: 50%; top: 50%; width: 1600px; height: 900px; overflow: hidden;
+  position: fixed; left: 50%; top: 50%; width: 1600px; height: 900px; overflow: hidden; overflow: clip;
   transform: translate(-50%, -50%) scale(var(--fit, 1)); transform-origin: 50% 50%;
-  background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-low) 62%, var(--sky-low) 100%);
+  background: radial-gradient(ellipse 60% 45% at 50% 100%, #3B2A62 0%, transparent 70%), linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 55%, var(--sky-low) 100%);
   box-shadow: 0 0 60px rgba(0,0,0,.5);
 }
 img { max-width: 100%; display: block; }
@@ -66,21 +73,34 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
 /* ---------- sky ---------- */
 .sky { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-.sun {
-  position: absolute; top: 70px; right: 6%; width: 110px; height: 110px; border-radius: 50%;
-  background: radial-gradient(circle at 40% 40%, #FFE689, var(--sun) 65%);
-  box-shadow: 0 0 0 16px rgba(255, 200, 58, .22), 0 0 0 34px rgba(255, 200, 58, .12);
-  animation: glow 4s ease-in-out infinite;
+.moon {
+  position: absolute; top: 52px; left: 7%; width: 120px; height: 120px; border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 35%, rgba(200,180,120,.45) 0 9px, transparent 10px),
+    radial-gradient(circle at 62% 58%, rgba(200,180,120,.4) 0 13px, transparent 14px),
+    radial-gradient(circle at 55% 25%, rgba(200,180,120,.35) 0 6px, transparent 7px),
+    radial-gradient(circle at 40% 40%, #FFFBE6, var(--moon) 60%, #E8D79A);
+  box-shadow: 0 0 40px 10px rgba(255, 244, 200, .35), 0 0 120px 40px rgba(170, 150, 255, .18);
+  animation: moonGlow 6s ease-in-out infinite;
 }
-@keyframes glow { 50% { box-shadow: 0 0 0 22px rgba(255, 200, 58, .25), 0 0 0 44px rgba(255, 200, 58, .1); } }
+@keyframes moonGlow { 50% { box-shadow: 0 0 55px 14px rgba(255, 244, 200, .45), 0 0 150px 50px rgba(170, 150, 255, .22); } }
+.star { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #FFF8DC; box-shadow: 0 0 6px #FFF8DC; animation: twinkle 3s ease-in-out infinite; }
+@keyframes twinkle { 50% { opacity: .15; transform: scale(.6); } }
+.bat { position: absolute; width: 46px; height: 22px; left: -80px; animation: batFly linear infinite; }
+.bat svg { width: 100%; height: 100%; display: block; animation: flap .25s ease-in-out infinite alternate; transform-origin: 50% 60%; }
+@keyframes flap { to { transform: scaleY(.45); } }
+@keyframes batFly { 0% { left: -80px; transform: translateY(0); } 25% { transform: translateY(-30px); } 50% { transform: translateY(20px); } 75% { transform: translateY(-15px); } 100% { left: calc(100% + 80px); transform: translateY(0); } }
+.bat.b1 { top: 70px; animation-duration: 16s; }
+.bat.b2 { top: 160px; width: 32px; height: 16px; animation-duration: 21s; animation-delay: -8s; }
+.bat.b3 { top: 110px; width: 38px; height: 18px; animation-duration: 26s; animation-delay: -15s; }
 .cloud {
-  position: absolute; left: -220px; width: 180px; height: 56px; background: var(--white);
-  border-radius: 60px; opacity: .9; animation: drift linear infinite;
+  position: absolute; left: -220px; width: 180px; height: 56px; background: #3A2E66;
+  border-radius: 60px; opacity: .75; filter: blur(2px); animation: drift linear infinite;
 }
-.cloud::before, .cloud::after { content: ""; position: absolute; background: var(--white); border-radius: 50%; }
+.cloud::before, .cloud::after { content: ""; position: absolute; background: #3A2E66; border-radius: 50%; }
 .cloud::before { width: 80px; height: 80px; top: -40px; left: 28px; }
 .cloud::after { width: 60px; height: 60px; top: -28px; left: 92px; }
-.cloud.c1 { top: 120px; animation-duration: 70s; }
+.cloud.c1 { top: 110px; animation-duration: 60s; animation-delay: -20s; }
 .cloud.c2 { top: 260px; transform: scale(.7); animation-duration: 95s; animation-delay: -40s; }
 .cloud.c3 { top: 60px; transform: scale(.55); animation-duration: 120s; animation-delay: -80s; }
 @keyframes drift { to { left: calc(100% + 220px); } }
@@ -88,21 +108,42 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .page { position: absolute; inset: 0; z-index: 1; }
 
 /* ---------- bunting ---------- */
-.bunting { display: block; width: 100%; height: 46px; }
+.bunting { display: block; width: 100%; height: 46px; animation: flicker 4s steps(1) infinite; }
+@keyframes flicker { 0%, 100% { filter: brightness(1); } 47% { filter: brightness(.7); } 49% { filter: brightness(1.15); } 52% { filter: brightness(.85); } }
+.fog { position: absolute; left: -10%; width: 120%; height: 160px; bottom: 40px; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 18% 50% at 10% 60%, var(--mist), transparent 70%),
+    radial-gradient(ellipse 22% 55% at 35% 50%, var(--mist), transparent 70%),
+    radial-gradient(ellipse 20% 50% at 62% 65%, var(--mist), transparent 70%),
+    radial-gradient(ellipse 24% 55% at 88% 55%, var(--mist), transparent 70%);
+  filter: blur(6px); animation: fogDrift 18s ease-in-out infinite alternate; }
+.fog.f2 { bottom: 0; opacity: .8; animation-duration: 24s; animation-direction: alternate-reverse; }
+.fog.f3 { bottom: 0; z-index: 2; height: 120px; opacity: .55; animation-duration: 30s; }
+@keyframes fogDrift { to { transform: translateX(6%); } }
+.firefly { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: #D8FF8A; box-shadow: 0 0 10px 3px rgba(190, 255, 120, .7); z-index: 2; pointer-events: none; animation: ffly ease-in-out infinite alternate, ffglow 2s ease-in-out infinite alternate; }
+@keyframes ffly { 33% { transform: translate(30px, -25px); } 66% { transform: translate(-20px, -45px); } 100% { transform: translate(15px, -10px); } }
+@keyframes ffglow { from { opacity: .2; } to { opacity: 1; } }
+.board-cat { position: absolute; top: -78px; right: 40px; width: 70px; height: 65px; z-index: 3; overflow: visible;
+  filter: drop-shadow(0 0 10px rgba(124, 255, 178, .25)); }
+.cat-eye { filter: drop-shadow(0 0 3px #E9FF5A); }
+.cat-eye { animation: blinkEye 5s infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes blinkEye { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
 
 /* ---------- header ---------- */
 .hero { display: grid; justify-items: center; gap: 6px; text-align: center; margin-top: -8px; }
 .title-cloud { position: relative; padding: 20px 72px 24px; isolation: isolate; max-width: 100%; }
 .title-cloud svg.cloud-shape { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; overflow: visible; }
 .title-cloud h1 {
-  margin: 0; font-family: var(--font-display); font-weight: 800;
-  font-size: 4rem; line-height: 1; letter-spacing: -.01em;
-  color: var(--ink); text-wrap: balance;
-  text-shadow: 0 3px 0 rgba(255, 255, 255, .8);
+  margin: 0; font-family: var(--font-eerie); font-weight: 400;
+  font-size: 4.6rem; line-height: 1; letter-spacing: .04em;
+  color: #C9FFDD; text-wrap: balance;
+  text-shadow: 0 0 10px rgba(124, 255, 178, .9), 0 0 28px rgba(124, 255, 178, .5), 0 5px 0 #0B0620;
+  animation: eerie 5s ease-in-out infinite;
 }
-.title-cloud h1 .magic { color: var(--grape); display: inline-block; animation: bob 2.6s ease-in-out infinite; }
+@keyframes eerie { 50% { text-shadow: 0 0 16px rgba(124, 255, 178, 1), 0 0 40px rgba(124, 255, 178, .6), 0 5px 0 #0B0620; } }
+.title-cloud h1 .magic { color: #FFB65C; text-shadow: 0 0 12px rgba(255, 150, 60, .9), 0 5px 0 #0B0620; display: inline-block; animation: bob 2.6s ease-in-out infinite; }
 @keyframes bob { 50% { transform: translateY(-6px) rotate(-2deg); } }
-.rays { position: absolute; top: -6px; width: 60px; height: 50px; }
+.rays { display: none; }
 .rays.left { left: -26px; }
 .rays.right { right: -26px; transform: scaleX(-1); }
 .rays i { position: absolute; width: 8px; height: 22px; border-radius: 6px; background: var(--sun); }
@@ -115,15 +156,15 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 .tagline .where {
   display: inline-block; margin-bottom: 4px; padding: 3px 12px; border-radius: 8px;
-  background: #1550A8; color: var(--white); font-family: var(--font-display); font-weight: 700;
-  letter-spacing: .04em; border: 2px solid var(--white); box-shadow: 0 2px 0 rgba(0,0,0,.18);
+  background: var(--night-panel); color: var(--glow); font-family: var(--font-display); font-weight: 700;
+  letter-spacing: .08em; border: 2px solid var(--sun); box-shadow: 0 0 14px rgba(242, 181, 58, .35);
   font-size: .92em;
 }
 .toolbar { position: absolute; top: 58px; right: 36px; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; z-index: 3; }
 .chip {
   display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 999px;
-  background: var(--paper); border: 3px solid var(--grape); font-weight: 800;
-  box-shadow: 0 4px 0 var(--grape-deep); font-variant-numeric: tabular-nums;
+  background: var(--night-panel); color: var(--cream); border: 3px solid var(--grape); font-weight: 800;
+  box-shadow: 0 4px 0 #000, 0 0 14px rgba(124, 255, 178, .25); font-variant-numeric: tabular-nums;
 }
 .chip .star { color: #E8A400; font-size: 1.2em; line-height: 1; }
 .chip .lvl { color: var(--grape); }
@@ -140,27 +181,29 @@ button.chip:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--grape
 
 /* stall (gerai) — same purple frame + white stitch as the printed cards */
 .stall {
-  position: relative; background: var(--paper); border-radius: var(--r-lg);
-  border: 6px solid var(--grape); box-shadow: 0 10px 0 var(--grape-deep), 0 22px 40px var(--shadow);
+  position: relative; border-radius: var(--r-lg);
+  background: radial-gradient(ellipse at 50% 45%, #F4EAD0 0%, #E3D3A9 60%, #BFA978 100%);
+  border: 6px solid var(--grape); box-shadow: 0 10px 0 var(--grape-deep), 0 0 40px rgba(124, 255, 178, .18), 0 22px 40px var(--shadow);
   overflow: hidden; min-width: 0;
 }
 .stall::after {
-  content: ""; position: absolute; inset: 6px; border: 2px dashed rgba(122, 63, 224, .35);
+  content: ""; position: absolute; inset: 6px; border: 2px dashed rgba(91, 42, 158, .45);
   border-radius: calc(var(--r-lg) - 10px); pointer-events: none;
 }
 .awning {
   height: 48px; position: relative;
-  background: repeating-linear-gradient(90deg, var(--awning-red) 0 44px, var(--white) 44px 88px);
+  background: repeating-linear-gradient(90deg, var(--awning-red) 0 44px, var(--awning-alt) 44px 88px);
 }
 .awning::after {
   content: ""; position: absolute; left: 0; right: 0; bottom: -21px; height: 22px;
   background:
     radial-gradient(circle at 22px 0, var(--awning-red) 21px, transparent 22px) 0 0 / 88px 22px repeat-x,
-    radial-gradient(circle at 66px 0, var(--white) 21px, transparent 22px) 0 0 / 88px 22px repeat-x;
+    radial-gradient(circle at 66px 0, var(--awning-alt) 21px, transparent 22px) 0 0 / 88px 22px repeat-x;
 }
 .stall-sign {
   position: absolute; left: 50%; top: 6px; transform: translateX(-50%); z-index: 2;
-  background: var(--ink); color: var(--cream); padding: 6px 18px; border-radius: 10px;
+  background: var(--night-panel); color: var(--glow); padding: 6px 18px; border-radius: 10px;
+  text-shadow: 0 0 8px rgba(124, 255, 178, .8); box-shadow: 0 0 16px rgba(242, 181, 58, .45);
   font-family: var(--font-display); font-weight: 800; letter-spacing: .06em; font-size: 1.02rem;
   white-space: nowrap; border: 3px solid var(--sun);
 }
@@ -177,7 +220,7 @@ button.chip:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--grape
 .spin-btn {
   position: absolute; left: 50%; top: 50%; width: 24%; aspect-ratio: 1; transform: translate(-50%, -50%);
   border-radius: 50%; border: 5px solid var(--white); z-index: 4; padding: 0; overflow: hidden;
-  background: radial-gradient(circle at 50% 30%, #FF7A6E 0%, var(--awning-red) 55%, #B8231A 100%);
+  background: radial-gradient(circle at 50% 30%, #E2475E 0%, #A3182F 55%, #5E0A1A 100%);
   box-shadow: 0 6px 0 #8E1A12, 0 0 0 5px var(--ink), 0 12px 24px rgba(0,0,0,.3);
   display: grid; place-items: center; align-content: center; gap: 1cqw;
   transition: transform .12s, box-shadow .12s;
@@ -199,14 +242,14 @@ button.chip:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--grape
 .spin-btn:active { transform: translate(-50%, -47%) scale(1); box-shadow: 0 2px 0 #8E1A12, 0 0 0 5px var(--ink), 0 6px 12px rgba(0,0,0,.3); }
 .spin-btn[disabled] { cursor: wait; filter: saturate(.6) brightness(.95); }
 .wheel-wrap:not(.spinning) .spin-btn { animation: pulse 1.8s ease-in-out infinite; }
-@keyframes pulse { 50% { box-shadow: 0 6px 0 #8E1A12, 0 0 0 5px var(--ink), 0 0 0 16px rgba(255, 200, 58, .55); } }
+@keyframes pulse { 50% { box-shadow: 0 6px 0 #8E1A12, 0 0 0 5px var(--ink), 0 0 26px 14px rgba(124, 255, 178, .55); } }
 
-.bulb { fill: #FFF3B0; }
+.bulb { fill: #FFE7A0; }
 .wheel-wrap .bulb { animation: blink 1.2s steps(1) infinite; }
 .wheel-wrap .bulb.alt { animation-delay: .6s; }
 .wheel-wrap.spinning .bulb { animation-duration: .25s; }
 .wheel-wrap.spinning .bulb.alt { animation-delay: .125s; }
-@keyframes blink { 50% { fill: #FF9F1C; } }
+@keyframes blink { 50% { fill: var(--glow); } }
 .seg-label { font-family: var(--font-display); font-weight: 800; fill: var(--white); paint-order: stroke; stroke: rgba(0,0,0,.25); stroke-width: 3px; }
 
 .status { min-height: 1.6em; margin: 0; font-weight: 800; font-size: 1.1rem; text-align: center; }
@@ -216,11 +259,12 @@ button.chip:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--grape
 .board {
   position: relative; min-width: 0; border-radius: 22px; padding: 16px 18px;
   background:
-    radial-gradient(circle at 20% 30%, rgba(255,255,255,.12) 0 2px, transparent 3px) 0 0 / 23px 19px,
+    radial-gradient(ellipse at 50% 40%, rgba(255, 200, 120, .16), transparent 65%),
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,.08) 0 2px, transparent 3px) 0 0 / 23px 19px,
     radial-gradient(circle at 70% 60%, rgba(90,50,10,.18) 0 1.5px, transparent 2.5px) 0 0 / 17px 21px,
     var(--cork);
   border: 14px solid var(--wood);
-  box-shadow: inset 0 0 0 3px var(--cork-dark), inset 0 6px 18px rgba(0,0,0,.25), 0 14px 30px var(--shadow);
+  box-shadow: inset 0 0 0 3px var(--cork-dark), inset 0 0 60px rgba(0,0,0,.6), 0 14px 30px var(--shadow), 0 0 40px rgba(124, 255, 178, .12);
   display: grid; gap: 16px;
 }
 .board-head {
@@ -234,8 +278,8 @@ button.chip:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--grape
 .board-head .eyebrow { margin: 0; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 800; color: var(--ink-soft); }
 .board-head h2 { margin: 2px 0 4px; font-family: var(--font-display); font-weight: 800; font-size: clamp(1.4rem, 3vw, 1.75rem); line-height: 1.1; }
 .counter { font-weight: 800; font-variant-numeric: tabular-nums; }
-.progress { height: 12px; background: #EDE5FF; border-radius: 999px; overflow: hidden; margin-top: 6px; }
-.progress span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--grape), var(--seg-jujur)); border-radius: inherit; transition: width .6s cubic-bezier(.2,.9,.3,1.3); }
+.progress { height: 12px; background: #CDBB8E; border-radius: 999px; overflow: hidden; margin-top: 6px; }
+.progress span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--grape), var(--glow)); border-radius: inherit; transition: width .6s cubic-bezier(.2,.9,.3,1.3); }
 
 .slots { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px 22px; padding-top: 6px; }
 .slots > .slot { flex: 0 0 124px; min-width: 0; }
@@ -244,11 +288,10 @@ button.chip:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--grape
   transition: transform .2s;
 }
 .slot.empty {
-  border: 3px dashed rgba(255,255,255,.75); background: rgba(255,255,255,.14);
-  display: grid; place-content: center; text-align: center; color: var(--white); cursor: default;
-  text-shadow: 0 2px 0 rgba(0,0,0,.2);
+  border: 3px dashed rgba(234, 223, 188, .5); background: rgba(10, 6, 25, .35);
+  display: grid; place-content: center; text-align: center; color: var(--cream); cursor: default;
 }
-.slot.empty b { font-family: var(--font-display); font-size: 2.6rem; line-height: 1; }
+.slot.empty b { font-family: var(--font-eerie); font-weight: 400; font-size: 3rem; line-height: 1; color: var(--glow); text-shadow: 0 0 12px rgba(124, 255, 178, .9); animation: eerie 3s ease-in-out infinite; }
 .slot.empty span { font-weight: 800; font-size: .82rem; padding: 0 8px; }
 .slot.got { transform: rotate(var(--tilt, -2deg)); }
 .slot.got:hover { transform: rotate(0) scale(1.04); }
@@ -286,7 +329,7 @@ button.chip:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--grape
 dialog.modal {
   position: absolute; inset: 0; z-index: 30; width: 100%; height: 100%; max-width: none; max-height: none;
   margin: 0; border: 0; padding: 24px; color: var(--ink);
-  background: rgba(42, 20, 96, .62); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  background: radial-gradient(ellipse at 50% 50%, rgba(20, 10, 45, .7), rgba(3, 2, 10, .92)); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
 }
 dialog.modal[open] { display: grid; place-items: center; }
 .modal-card {
@@ -298,7 +341,7 @@ dialog.modal[open] { display: grid; place-items: center; }
 @keyframes popIn { from { transform: scale(.7) translateY(30px); opacity: 0; } }
 .close-x {
   position: absolute; top: 10px; right: 10px; width: 44px; height: 44px; border-radius: 50%; border: 0;
-  background: #EFE8FF; color: var(--ink); font-size: 1.5rem; line-height: 1; font-weight: 800; z-index: 3;
+  background: var(--paper); color: var(--ink); font-size: 1.5rem; line-height: 1; font-weight: 800; z-index: 3;
 }
 
 .flip { width: min(300px, 64vw); aspect-ratio: 2 / 3; perspective: 1400px; max-width: 100%; }
@@ -317,11 +360,12 @@ dialog.modal[open] { display: grid; place-items: center; }
 .face.back {
   transform: rotateY(180deg); border: 6px solid var(--white);
   background:
-    radial-gradient(circle, rgba(255,255,255,.22) 2px, transparent 3px) 0 0 / 26px 26px,
-    linear-gradient(160deg, var(--grape) 0%, var(--grape-deep) 100%);
+    radial-gradient(circle, rgba(255,248,220,.35) 1.5px, transparent 2.5px) 0 0 / 34px 30px,
+    radial-gradient(circle at 50% 42%, rgba(124, 255, 178, .25), transparent 55%),
+    linear-gradient(160deg, #24124A 0%, #0B0620 100%);
   display: grid; place-content: center; justify-items: center; gap: 10px; color: var(--white); text-align: center;
 }
-.face.back .q { font-family: var(--font-display); font-weight: 800; font-size: 6rem; line-height: 1; color: var(--sun); text-shadow: 0 5px 0 rgba(0,0,0,.25); }
+.face.back .q { font-family: var(--font-eerie); font-weight: 400; font-size: 8rem; line-height: 1; color: var(--glow); text-shadow: 0 0 20px rgba(124, 255, 178, .9), 0 0 50px rgba(124, 255, 178, .5); }
 .face.back p { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; letter-spacing: .04em; }
 
 .panel { min-width: 0; width: 100%; display: grid; gap: 14px; opacity: .25; transition: opacity .5s; }
@@ -378,7 +422,7 @@ dialog.modal[open] { display: grid; place-items: center; }
 /* instruction bubble */
 .ayat-pop {
   position: relative; max-width: 460px; background: var(--paper); border-radius: 32px; border: 6px solid var(--grape);
-  box-shadow: 0 8px 0 var(--grape-deep), 0 20px 40px rgba(0,0,0,.3); padding: 26px 28px;
+  box-shadow: 0 8px 0 var(--grape-deep), 0 0 40px rgba(124, 255, 178, .35), 0 20px 40px rgba(0,0,0,.5); padding: 26px 28px;
   display: grid; justify-items: center; gap: 10px; text-align: center;
   animation: bubbleIn .6s cubic-bezier(.2,.9,.3,1.4) both;
 }
@@ -396,6 +440,7 @@ dialog.modal[open] { display: grid; place-items: center; }
 
 .pop-title {
   margin: 0; padding: 6px 22px; border-radius: 999px; background: var(--cream); border: 4px solid var(--sun);
+  box-shadow: 0 0 22px rgba(242, 181, 58, .6);
   font-family: var(--font-display); font-weight: 800; font-size: clamp(1.4rem, 5vw, 2rem); line-height: 1.2; text-align: center;
 }
 .btn.big { font-size: 1.25rem; padding: 14px 30px; }
@@ -403,13 +448,13 @@ dialog.modal[open] { display: grid; place-items: center; }
 /* ---------- finish dialog ---------- */
 .finish-card {
   position: relative; width: min(560px, 100%); background: var(--paper); border-radius: var(--r-lg); border: 6px solid var(--sun);
-  box-shadow: 0 10px 0 #C98F00, 0 30px 60px rgba(0,0,0,.35); padding: 30px 24px 26px; text-align: center;
+  box-shadow: 0 10px 0 #8A5F12, 0 0 50px rgba(124, 255, 178, .3), 0 30px 60px rgba(0,0,0,.5); padding: 30px 24px 26px; text-align: center;
   display: grid; justify-items: center; gap: 12px; animation: popIn .5s cubic-bezier(.2,.9,.3,1.3);
 }
 .medal {
   width: 130px; height: 130px; border-radius: 50%; display: grid; place-items: center; position: relative;
-  background: radial-gradient(circle at 35% 30%, #FFF0A8, var(--sun) 60%, #E39A00);
-  border: 6px solid var(--white); box-shadow: 0 0 0 6px var(--grape), 0 10px 20px rgba(0,0,0,.25);
+  background: radial-gradient(circle at 35% 30%, #B9FFD6, #3E8F6A 55%, #10291F);
+  border: 6px solid var(--cream); box-shadow: 0 0 0 6px var(--grape), 0 0 40px rgba(124, 255, 178, .7);
   font-size: 4rem; animation: spinMedal 2.4s ease-in-out infinite;
 }
 @keyframes spinMedal { 50% { transform: rotate(-8deg) scale(1.05); } }
@@ -425,7 +470,7 @@ dialog.modal[open] { display: grid; place-items: center; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-  .cloud { display: none; }
+  .cloud, .bat, .firefly { display: none; }
 }
 </style>
 </head>
@@ -433,22 +478,30 @@ dialog.modal[open] { display: grid; place-items: center; }
 
 <div id="slide">
 <div class="sky" aria-hidden="true">
-  <div class="sun"></div>
+  <div class="moon"></div>
+  <div id="stars"></div>
+  <div class="bat b1"><svg viewBox="0 0 46 22"><path d="M23 8c-2-3-5-3-6 0-3-4-9-6-17-2 5 1 8 5 8 9 2-2 5-2 7 0 1-3 4-3 6-1 1-1 3-1 4 0 2-2 5-2 6 1 2-2 5-2 7 0 0-4 3-8 8-9-8-4-14-2-17 2-1-3-4-3-6 0z" fill="#05030D"/></svg></div>
+  <div class="bat b2"><svg viewBox="0 0 46 22"><path d="M23 8c-2-3-5-3-6 0-3-4-9-6-17-2 5 1 8 5 8 9 2-2 5-2 7 0 1-3 4-3 6-1 1-1 3-1 4 0 2-2 5-2 6 1 2-2 5-2 7 0 0-4 3-8 8-9-8-4-14-2-17 2-1-3-4-3-6 0z" fill="#05030D"/></svg></div>
+  <div class="bat b3"><svg viewBox="0 0 46 22"><path d="M23 8c-2-3-5-3-6 0-3-4-9-6-17-2 5 1 8 5 8 9 2-2 5-2 7 0 1-3 4-3 6-1 1-1 3-1 4 0 2-2 5-2 6 1 2-2 5-2 7 0 0-4 3-8 8-9-8-4-14-2-17 2-1-3-4-3-6 0z" fill="#05030D"/></svg></div>
   <div class="cloud c1"></div>
   <div class="cloud c2"></div>
   <div class="cloud c3"></div>
 </div>
 
 <div class="page">
-  <!-- bunting for the community fair -->
+  <!-- string of kampung lanterns for the night fair -->
   <svg class="bunting" aria-hidden="true">
     <defs>
-      <pattern id="flags" width="240" height="46" patternUnits="userSpaceOnUse">
-        <path d="M0 6 H240" stroke="#7B4B22" stroke-width="2"/>
-        <path d="M6 6 L54 6 L30 40 Z" fill="#E8443A"/>
-        <path d="M66 6 L114 6 L90 40 Z" fill="#FFC83A"/>
-        <path d="M126 6 L174 6 L150 40 Z" fill="#2C7BE5"/>
-        <path d="M186 6 L234 6 L210 40 Z" fill="#1FA35E"/>
+      <radialGradient id="lampGlow"><stop offset="0" stop-color="#FFB65C" stop-opacity=".75"/><stop offset="1" stop-color="#FFB65C" stop-opacity="0"/></radialGradient>
+      <pattern id="flags" width="200" height="46" patternUnits="userSpaceOnUse">
+        <path d="M0 6 Q50 14 100 6 T200 6" fill="none" stroke="#2A1A10" stroke-width="2"/>
+        <path d="M14 8 L50 8 L32 38 Z" fill="#5A1424"/>
+        <circle cx="100" cy="24" r="22" fill="url(#lampGlow)"/>
+        <rect x="96" y="8" width="8" height="5" fill="#2A1A10"/>
+        <ellipse cx="100" cy="24" rx="10" ry="12" fill="#FF9F3D"/>
+        <ellipse cx="97" cy="21" rx="3" ry="5" fill="#FFE2A8"/>
+        <rect x="96" y="35" width="8" height="4" fill="#2A1A10"/>
+        <path d="M150 8 L186 8 L168 38 Z" fill="#2B1257"/>
       </pattern>
     </defs>
     <rect width="100%" height="46" fill="url(#flags)"/>
@@ -458,16 +511,16 @@ dialog.modal[open] { display: grid; place-items: center; }
     <div class="title-cloud">
       <svg class="cloud-shape" viewBox="0 0 600 200" preserveAspectRatio="none" aria-hidden="true">
         <path d="M70 160 C18 160 16 96 66 92 C58 46 120 30 150 58 C170 16 246 10 270 46 C300 8 384 10 400 50 C432 20 506 30 504 76 C556 70 590 118 560 148 C578 182 528 196 494 182 L120 186 C84 196 44 186 70 160 Z"
-              fill="none" stroke="#FFFFFF" stroke-width="16" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
+              fill="none" stroke="rgba(124,255,178,.35)" stroke-width="16" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
         <path d="M70 160 C18 160 16 96 66 92 C58 46 120 30 150 58 C170 16 246 10 270 46 C300 8 384 10 400 50 C432 20 506 30 504 76 C556 70 590 118 560 148 C578 182 528 196 494 182 L120 186 C84 196 44 186 70 160 Z"
-              fill="#FFF7C9" stroke="#F6C93B" stroke-width="6" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
+              fill="#140C2E" fill-opacity=".85" stroke="#5B2A9E" stroke-width="5" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
       </svg>
       <span class="rays left" aria-hidden="true"><i></i><i></i><i></i></span>
       <span class="rays right" aria-hidden="true"><i></i><i></i><i></i></span>
       <h1>Putaran <span class="magic">Ajaib</span> Sifat</h1>
     </div>
     <p class="tagline">
-      <span class="where">PESTA KOMUNITI · TAMAN HARMONI</span>
+      <span class="where">MALAM MISTERI · TAMAN HARMONI</span>
     </p>
     <div class="toolbar">
       <button class="chip" id="sound-btn" type="button" aria-pressed="true">🔊 Bunyi: Hidup</button>
@@ -479,28 +532,34 @@ dialog.modal[open] { display: grid; place-items: center; }
     <!-- carnival stall with the wheel -->
     <section class="stall" aria-labelledby="stall-title">
       <div class="awning" aria-hidden="true"></div>
-      <span class="stall-sign" id="stall-title">GERAI RODA SIFAT</span>
+      <span class="stall-sign" id="stall-title">GERAI MISTERI</span>
       <div class="stall-body">
         <div class="wheel-wrap" id="wheel-wrap">
           <svg class="pointer" id="pointer" viewBox="0 0 54 66" aria-hidden="true">
-            <path d="M27 64 L4 18 A24 24 0 1 1 50 18 Z" fill="#E8443A" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round"/>
+            <path d="M27 64 L4 18 A24 24 0 1 1 50 18 Z" fill="#A3182F" stroke="#EADFBC" stroke-width="4" stroke-linejoin="round"/>
             <circle cx="27" cy="22" r="8" fill="#FFFFFF"/>
           </svg>
           <svg class="wheel-svg" viewBox="0 0 400 400" id="wheel-svg" role="img" aria-label="Roda dengan sepuluh bahagian: Rajin, Jujur, Malas, Penakut dan Prihatin">
-            <circle cx="200" cy="200" r="198" fill="#2A1460"/>
-            <circle cx="200" cy="200" r="190" fill="#7A3FE0"/>
+            <circle cx="200" cy="200" r="198" fill="#0B0620"/>
+            <circle cx="200" cy="200" r="190" fill="#3B1A6E"/>
             <g id="bulbs"></g>
             <g id="rotor"></g>
-            <circle cx="200" cy="200" r="172" fill="none" stroke="#FFFFFF" stroke-width="5"/>
+            <circle cx="200" cy="200" r="172" fill="none" stroke="#EADFBC" stroke-width="5"/>
           </svg>
           <button class="spin-btn" id="spin-btn" type="button" aria-label="Pusing roda"><svg class="spin-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.6-5.9" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round"/><path d="M20.5 3.2v5.2h-5.2" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="spin-word">PUSING</span></button>
         </div>
-        <p class="status" id="status" aria-live="polite">Tekan PUSING!</p>
+        <p class="status" id="status" aria-live="polite">Tekan PUSING… kalau berani!</p>
       </div>
     </section>
 
     <!-- notice board with the collected cards -->
     <section class="board" aria-labelledby="board-title">
+      <svg class="board-cat" viewBox="-6 -20 56 52" aria-hidden="true">
+        <path d="M0 30 C0 8 6 -2 14 -4 L10 -16 L18 -8 L26 -16 L24 -4 C32 0 34 12 32 30 Z" fill="#05030D"/>
+        <path d="M30 28 C46 26 48 8 40 0" fill="none" stroke="#05030D" stroke-width="4" stroke-linecap="round"/>
+        <ellipse class="cat-eye" cx="15" cy="2" rx="2.8" ry="2.4" fill="#E9FF5A"/>
+        <ellipse class="cat-eye" cx="23" cy="2" rx="2.8" ry="2.4" fill="#E9FF5A"/>
+      </svg>
       <div class="board-head">
         <p class="eyebrow">Papan Kenyataan Taman Harmoni</p>
         <h2 id="board-title">Koleksi Kad Sifat Saya</h2>
@@ -517,60 +576,65 @@ dialog.modal[open] { display: grid; place-items: center; }
 
   <!-- the neighbourhood street -->
   <svg class="street" viewBox="0 0 1200 240" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-    <path d="M0 150 C160 100 300 120 420 130 C560 142 640 96 800 110 C960 124 1060 92 1200 118 V240 H0 Z" fill="#9AD67F"/>
-    <rect x="0" y="176" width="1200" height="64" fill="#62B653"/>
-    <rect x="0" y="200" width="1200" height="40" fill="#5A5F6C"/>
-    <path d="M0 220 H1200" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="26 22"/>
+    <path d="M0 150 C160 100 300 120 420 130 C560 142 640 96 800 110 C960 124 1060 92 1200 118 V240 H0 Z" fill="#1C2F35"/>
+    <rect x="0" y="176" width="1200" height="64" fill="#14261E"/>
+    <rect x="0" y="200" width="1200" height="40" fill="#1B1A26"/>
+    <path d="M0 220 H1200" stroke="#6E6A86" stroke-width="3" stroke-dasharray="26 22"/>
     <!-- kampung house on stilts -->
     <g>
-      <rect x="62" y="150" width="6" height="30" fill="#6B3E1A"/><rect x="112" y="150" width="6" height="30" fill="#6B3E1A"/><rect x="162" y="150" width="6" height="30" fill="#6B3E1A"/>
-      <rect x="54" y="104" width="122" height="50" fill="#C9874A"/>
-      <path d="M40 108 L115 58 L190 108 Z" fill="#B23A2E"/>
-      <rect x="72" y="118" width="22" height="20" fill="#FFE9A8" stroke="#6B3E1A" stroke-width="3"/>
-      <rect x="128" y="116" width="24" height="38" fill="#7B4B22"/>
-      <path d="M128 154 L120 180 M152 154 L160 180 M122 166 H158" stroke="#6B3E1A" stroke-width="3"/>
+      <rect x="62" y="150" width="6" height="30" fill="#22140C"/><rect x="112" y="150" width="6" height="30" fill="#22140C"/><rect x="162" y="150" width="6" height="30" fill="#22140C"/>
+      <rect x="54" y="104" width="122" height="50" fill="#3A2A22"/>
+      <path d="M40 108 L115 58 L190 108 Z" fill="#3E1822"/>
+      <rect x="72" y="118" width="22" height="20" fill="#FFD27A" stroke="#22140C" stroke-width="3"/>
+      <rect x="128" y="116" width="24" height="38" fill="#2A1A10"/>
+      <path d="M128 154 L120 180 M152 154 L160 180 M122 166 H158" stroke="#22140C" stroke-width="3"/>
     </g>
     <!-- trees -->
-    <g fill="#2E8B3E"><rect x="222" y="130" width="8" height="50" fill="#7B4B22"/><circle cx="226" cy="120" r="30"/><circle cx="206" cy="134" r="20"/><circle cx="248" cy="134" r="20"/></g>
+    <g fill="#0E2419"><rect x="222" y="130" width="8" height="50" fill="#2A1A10"/><circle cx="226" cy="120" r="30"/><circle cx="206" cy="134" r="20"/><circle cx="248" cy="134" r="20"/></g>
     <!-- terrace houses -->
     <g>
-      <rect x="280" y="110" width="70" height="70" fill="#F7D774"/><path d="M272 112 L315 82 L358 112 Z" fill="#E06A3B"/>
-      <rect x="292" y="128" width="20" height="18" fill="#FFFFFF" stroke="#2A1460" stroke-width="2"/><rect x="322" y="140" width="18" height="40" fill="#5A25B8"/>
-      <rect x="350" y="110" width="70" height="70" fill="#9FD3F0"/><path d="M342 112 L385 82 L428 112 Z" fill="#E06A3B"/>
-      <rect x="362" y="128" width="20" height="18" fill="#FFFFFF" stroke="#2A1460" stroke-width="2"/><rect x="392" y="140" width="18" height="40" fill="#1FA35E"/>
-      <rect x="420" y="110" width="70" height="70" fill="#F4B6C8"/><path d="M412 112 L455 82 L498 112 Z" fill="#E06A3B"/>
-      <rect x="432" y="128" width="20" height="18" fill="#FFFFFF" stroke="#2A1460" stroke-width="2"/><rect x="462" y="140" width="18" height="40" fill="#2C7BE5"/>
+      <rect x="280" y="110" width="70" height="70" fill="#332C46"/><path d="M272 112 L315 82 L358 112 Z" fill="#2E1626"/>
+      <rect x="292" y="128" width="20" height="18" fill="#FFD27A" stroke="#0B0620" stroke-width="2"/><rect x="322" y="140" width="18" height="40" fill="#1A1030"/>
+      <rect x="350" y="110" width="70" height="70" fill="#28324A"/><path d="M342 112 L385 82 L428 112 Z" fill="#2E1626"/>
+      <rect x="362" y="128" width="20" height="18" fill="#FFD27A" stroke="#0B0620" stroke-width="2"/><rect x="392" y="140" width="18" height="40" fill="#2E1426"/>
+      <rect x="420" y="110" width="70" height="70" fill="#3E2840"/><path d="M412 112 L455 82 L498 112 Z" fill="#2E1626"/>
+      <rect x="432" y="128" width="20" height="18" fill="#FFD27A" stroke="#0B0620" stroke-width="2"/><rect x="462" y="140" width="18" height="40" fill="#1E1A40"/>
     </g>
     <!-- community hall -->
     <g>
-      <rect x="540" y="96" width="220" height="84" fill="#FFF7E6" stroke="#2A1460" stroke-width="3"/>
-      <path d="M526 100 L650 46 L774 100 Z" fill="#2C7BE5" stroke="#2A1460" stroke-width="3" stroke-linejoin="round"/>
-      <rect x="586" y="104" width="128" height="22" rx="4" fill="#2A1460"/>
+      <rect x="540" y="96" width="220" height="84" fill="#2E2846" stroke="#0B0620" stroke-width="3"/>
+      <path d="M526 100 L650 46 L774 100 Z" fill="#1E1A40" stroke="#0B0620" stroke-width="3" stroke-linejoin="round"/>
+      <rect x="586" y="104" width="128" height="22" rx="4" fill="#0B0620"/>
       <text x="650" y="120" text-anchor="middle" font-family="Baloo 2, Nunito, sans-serif" font-weight="800" font-size="14" fill="#FFC83A">BALAI RAYA</text>
-      <rect x="560" y="134" width="34" height="24" fill="#BFE4FF" stroke="#2A1460" stroke-width="2"/>
-      <rect x="706" y="134" width="34" height="24" fill="#BFE4FF" stroke="#2A1460" stroke-width="2"/>
-      <rect x="628" y="136" width="44" height="44" fill="#7B4B22"/>
-      <path d="M560 96 L560 82 M740 96 L740 82" stroke="#2A1460" stroke-width="2"/>
-      <path d="M540 96 Q570 108 600 96 Q630 108 660 96 Q690 108 720 96 Q740 106 760 96" fill="none" stroke="#E8443A" stroke-width="3"/>
+      <rect x="560" y="134" width="34" height="24" fill="#FFD27A" stroke="#0B0620" stroke-width="2"/>
+      <rect x="706" y="134" width="34" height="24" fill="#FFD27A" stroke="#0B0620" stroke-width="2"/>
+      <rect x="628" y="136" width="44" height="44" fill="#2A1A10"/>
+      <path d="M560 96 L560 82 M740 96 L740 82" stroke="#0B0620" stroke-width="2"/>
+      <path d="M540 96 Q570 108 600 96 Q630 108 660 96 Q690 108 720 96 Q740 106 760 96" fill="none" stroke="#5E1A26" stroke-width="3"/>
     </g>
     <!-- tree -->
-    <g fill="#3BA14C"><rect x="800" y="128" width="8" height="52" fill="#7B4B22"/><circle cx="804" cy="116" r="28"/><circle cx="784" cy="130" r="18"/><circle cx="826" cy="130" r="18"/></g>
+    <g fill="#112C1E"><rect x="800" y="128" width="8" height="52" fill="#2A1A10"/><circle cx="804" cy="116" r="28"/><circle cx="784" cy="130" r="18"/><circle cx="826" cy="130" r="18"/></g>
     <!-- corner shop -->
     <g>
-      <rect x="860" y="104" width="150" height="76" fill="#FFE08A" stroke="#2A1460" stroke-width="3"/>
-      <rect x="852" y="96" width="166" height="16" fill="#1FA35E"/>
+      <rect x="860" y="104" width="150" height="76" fill="#3A3024" stroke="#0B0620" stroke-width="3"/>
+      <rect x="852" y="96" width="166" height="16" fill="#2E1426"/>
       <path d="M860 112 h150" stroke="#FFFFFF" stroke-width="0"/>
-      <g fill="#E8443A"><rect x="860" y="112" width="18.75" height="14"/><rect x="897.5" y="112" width="18.75" height="14"/><rect x="935" y="112" width="18.75" height="14"/><rect x="972.5" y="112" width="18.75" height="14"/></g>
+      <g fill="#5E1A26"><rect x="860" y="112" width="18.75" height="14"/><rect x="897.5" y="112" width="18.75" height="14"/><rect x="935" y="112" width="18.75" height="14"/><rect x="972.5" y="112" width="18.75" height="14"/></g>
       <text x="935" y="108" text-anchor="middle" font-family="Baloo 2, Nunito, sans-serif" font-weight="800" font-size="12" fill="#FFFFFF">KEDAI RUNCIT</text>
-      <rect x="876" y="134" width="50" height="30" fill="#BFE4FF" stroke="#2A1460" stroke-width="2"/>
-      <rect x="950" y="132" width="40" height="48" fill="#7B4B22"/>
+      <rect x="876" y="134" width="50" height="30" fill="#FFD27A" stroke="#0B0620" stroke-width="2"/>
+      <rect x="950" y="132" width="40" height="48" fill="#2A1A10"/>
     </g>
     <!-- street lamp and sign -->
+    <circle cx="1072" cy="104" r="34" fill="#FFD27A" opacity=".18"/>
     <g><rect x="1046" y="96" width="5" height="84" fill="#3E4350"/><path d="M1048 98 h22" stroke="#3E4350" stroke-width="5"/><circle cx="1072" cy="104" r="8" fill="#FFE27A"/></g>
-    <g><rect x="1110" y="132" width="4" height="48" fill="#3E4350"/><rect x="1070" y="118" width="84" height="20" rx="3" fill="#1550A8" stroke="#FFFFFF" stroke-width="2"/>
+    <g><rect x="1110" y="132" width="4" height="48" fill="#3E4350"/><rect x="1070" y="118" width="84" height="20" rx="3" fill="#1D2F5C" stroke="#FFFFFF" stroke-width="2"/>
       <text x="1112" y="132" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="10" fill="#FFFFFF">JLN MUHIBAH</text></g>
-    <g fill="#2E8B3E"><rect x="1166" y="132" width="7" height="48" fill="#7B4B22"/><circle cx="1170" cy="122" r="24"/></g>
-  </svg>
+    <g fill="#0E2419"><rect x="1166" y="132" width="7" height="48" fill="#2A1A10"/><circle cx="1170" cy="122" r="24"/></g>
+    </svg>
+  <div class="fog"></div>
+  <div class="fog f2"></div>
+  <div class="fog f3"></div>
+  <div id="fireflies"></div>
 </div>
 
 <!-- card reveal dialog -->
@@ -582,7 +646,7 @@ dialog.modal[open] { display: grid; place-items: center; }
       <div class="flip" id="flip">
         <div class="flip-inner">
           <div class="face front"><img id="m-img" src="images/jujur.jpg" alt=""></div>
-          <div class="face back" aria-hidden="true"><span class="q">?</span><p>KAD SIFAT</p></div>
+          <div class="face back" aria-hidden="true"><span class="q">?</span><p>KAD MISTERI</p></div>
         </div>
       </div>
       <button class="btn primary big" id="again-btn" type="button">Pusing Lagi ↻</button>
@@ -598,8 +662,8 @@ dialog.modal[open] { display: grid; place-items: center; }
 <!-- all cards collected -->
 <dialog class="modal" id="done-dlg" aria-labelledby="done-title">
   <div class="finish-card">
-    <div class="medal" aria-hidden="true">🏅</div>
-    <h2 id="done-title">Tahniah!</h2>
+    <div class="medal" aria-hidden="true">🔮</div>
+    <h2 id="done-title">Tahniah! Misteri selesai!</h2>
     <p>Semua 5 kad sudah dikumpul.</p>
     <div class="mini-cards">
       <img src="images/rajin.jpg" alt="Kad Rajin">
@@ -624,7 +688,7 @@ dialog.modal[open] { display: grid; place-items: center; }
   /* ---------------- content ---------------- */
   var SIFAT = {
     jujur: {
-      name: "Jujur", type: "baik", img: "images/jujur.jpg", color: "#2C7BE5", icon: "🤝",
+      name: "Jujur", type: "baik", img: "images/jujur.jpg", color: "#1F4FA8", icon: "🤝",
       alt: "Kad Jujur: seorang murid lelaki memulangkan dompet yang dijumpai kepada rakannya di kawasan sekolah.",
       maksud: "Bercakap benar, tidak menipu dan tidak mengambil hak orang lain.",
       contoh: [
@@ -637,7 +701,7 @@ dialog.modal[open] { display: grid; place-items: center; }
       bincang: "Pernahkah kamu menjumpai barang orang lain? Apakah yang kamu lakukan?"
     },
     rajin: {
-      name: "Rajin", type: "baik", img: "images/rajin.jpg", color: "#1FA35E", icon: "🧹",
+      name: "Rajin", type: "baik", img: "images/rajin.jpg", color: "#1D7A4A", icon: "🧹",
       alt: "Kad Rajin: seorang murid perempuan sedang mengelap meja di dalam kelas.",
       maksud: "Tekun dan bersungguh-sungguh melakukan kerja tanpa perlu disuruh.",
       contoh: [
@@ -650,7 +714,7 @@ dialog.modal[open] { display: grid; place-items: center; }
       bincang: "Apakah satu kerja yang kamu boleh bantu di rumah atau di taman perumahan kamu?"
     },
     malas: {
-      name: "Malas", type: "buruk", img: "images/malas.jpg", color: "#F28C1B", icon: "😴",
+      name: "Malas", type: "buruk", img: "images/malas.jpg", color: "#B5561A", icon: "😴",
       alt: "Kad Malas: seorang murid lelaki menguap dan mengantuk di hadapan buku yang terbuka.",
       maksud: "Tidak mahu berusaha dan suka menangguhkan kerja.",
       contoh: [
@@ -668,7 +732,7 @@ dialog.modal[open] { display: grid; place-items: center; }
       bincang: "Apakah yang akan berlaku jika semua penduduk malas membuang sampah?"
     },
     penakut: {
-      name: "Penakut", type: "buruk", img: "images/penakut.jpg", color: "#8A3FD1", icon: "😨",
+      name: "Penakut", type: "buruk", img: "images/penakut.jpg", color: "#5B2A9E", icon: "😨",
       alt: "Kad Penakut: seorang murid lelaki menggigil ketakutan apabila ternampak seekor kucing hitam.",
       maksud: "Terlalu mudah berasa takut sehingga tidak berani mencuba atau bersuara.",
       contoh: [
@@ -686,7 +750,7 @@ dialog.modal[open] { display: grid; place-items: center; }
       bincang: "Bagaimanakah kamu boleh membantu rakan yang malu atau takut?"
     },
     prihatin: {
-      name: "Prihatin", type: "baik", img: "images/prihatin.jpg", color: "#E0457B", icon: "💞",
+      name: "Prihatin", type: "baik", img: "images/prihatin.jpg", color: "#9E2A5B", icon: "💞",
       alt: "Kad Prihatin: hati merah jambu besar dikelilingi hati-hati kecil."
     }
   };
@@ -734,10 +798,10 @@ dialog.modal[open] { display: grid; place-items: center; }
   }
   var sfx = {
     tick: function () { var n = performance.now(); if (n - lastTick < 35) return; lastTick = n; tone(1250, 0, 0.035, "square", 0.04); },
-    reveal: function () { [392, 523, 659, 784].forEach(function (f, i) { tone(f, i * 0.09, 0.25, "triangle", 0.16); }); tone(1046, 0.38, 0.5, "triangle", 0.18); },
+    reveal: function () { [220, 261.6, 311.1, 370].forEach(function (f, i) { tone(f, i * 0.12, 0.45, "triangle", 0.15); }); tone(880, 0.5, 0.9, "sine", 0.1); tone(1318.5, 0.62, 0.8, "sine", 0.06); },
     correct: function () { tone(880, 0, 0.16, "sine", 0.2); tone(1318, 0.12, 0.35, "sine", 0.2); },
     wrong: function () { tone(233, 0, 0.22, "sawtooth", 0.06); tone(196, 0.18, 0.32, "sawtooth", 0.06); },
-    finish: function () { [523, 659, 784, 1046, 784, 1046, 1318].forEach(function (f, i) { tone(f, i * 0.12, 0.3, "triangle", 0.17); }); }
+    finish: function () { [440, 523.3, 622.3, 740, 880, 1046.5, 1318.5].forEach(function (f, i) { tone(f, i * 0.13, 0.45, "triangle", 0.15); }); }
   };
 
   /* ---------------- wheel drawing ---------------- */
@@ -754,7 +818,7 @@ dialog.modal[open] { display: grid; place-items: center; }
   SEGMENTS.forEach(function (key, i) {
     var s = SIFAT[key], a0 = i * SEG, a1 = a0 + SEG, p0 = pt(R, a0), p1 = pt(R, a1);
     el("path", { d: "M" + CX + " " + CY + " L" + p0[0] + " " + p0[1] + " A" + R + " " + R + " 0 0 1 " + p1[0] + " " + p1[1] + " Z",
-      fill: s.color, stroke: "#FFFFFF", "stroke-width": 3, "stroke-linejoin": "round" }, rotor);
+      fill: s.color, stroke: "#EADFBC", "stroke-width": 3, "stroke-linejoin": "round" }, rotor);
     var g = el("g", { transform: "rotate(" + (a0 + SEG / 2) + " " + CX + " " + CY + ")" }, rotor);
     // soft highlight near the rim
     el("path", { d: "M" + pt(R - 4, -SEG / 2 + 2).join(" ") + " A" + (R - 4) + " " + (R - 4) + " 0 0 1 " + pt(R - 4, SEG / 2 - 2).join(" "),
@@ -885,7 +949,7 @@ dialog.modal[open] { display: grid; place-items: center; }
       $("m-title").textContent = s.name + "!";
       setTimeout(function () { $("ayat-pop").hidden = false; }, reduceMotion ? 0 : 700);
       statusEl.textContent = "Kamu dapat kad " + s.name + "!";
-      confetti(140, [s.color, "#FFC83A", "#FFFFFF", "#E8443A"]);
+      confetti(140, [s.color, "#7CFFB2", "#FFF4C8", "#FFB65C", "#A67CFF"]);
     }, t2);
   }
 
@@ -925,7 +989,7 @@ dialog.modal[open] { display: grid; place-items: center; }
   function resetGame() {
     state.collected = []; state.celebrated = false; save();
     renderBoard(null);
-    statusEl.textContent = "Tekan PUSING!";
+    statusEl.textContent = "Tekan PUSING… kalau berani!";
   }
   resetBtn.addEventListener("click", function () {
     if (resetArmed) {
@@ -948,7 +1012,7 @@ dialog.modal[open] { display: grid; place-items: center; }
   soundBtn.addEventListener("click", function () { state.sound = !state.sound; save(); renderSound(); if (state.sound) sfx.correct(); });
 
   /* ---------------- confetti ---------------- */
-  var PALETTE = ["#2C7BE5", "#1FA35E", "#F28C1B", "#8A3FD1", "#FFC83A", "#E8443A", "#FFFFFF"];
+  var PALETTE = ["#7CFFB2", "#A67CFF", "#FFB65C", "#FFF4C8", "#9E2A5B", "#5B2A9E", "#D8FF8A"];
   function confetti(n, colors) {
     if (reduceMotion) return;
     var host = document.querySelector("dialog[open]") || $("slide");
@@ -989,6 +1053,25 @@ dialog.modal[open] { display: grid; place-items: center; }
     if ((e.key === " " || e.key === "Enter") && (e.target === document.body)) { e.preventDefault(); spin(); }
   });
 
+  /* ---------------- night sky: stars + fireflies ---------------- */
+  (function () {
+    var st = $("stars"), ff = $("fireflies"), i, d;
+    for (i = 0; i < 80; i++) {
+      d = document.createElement("i"); d.className = "star";
+      d.style.left = (Math.random() * 100) + "%"; d.style.top = (Math.random() * 55) + "%";
+      d.style.animationDelay = (-Math.random() * 3) + "s"; d.style.animationDuration = (2 + Math.random() * 3) + "s";
+      if (Math.random() < .2) { d.style.width = d.style.height = "4px"; }
+      st.appendChild(d);
+    }
+    for (i = 0; i < 22; i++) {
+      d = document.createElement("i"); d.className = "firefly";
+      d.style.left = (Math.random() * 100) + "%"; d.style.top = (70 + Math.random() * 28) + "%";
+      d.style.animationDuration = (5 + Math.random() * 6) + "s, " + (1.2 + Math.random() * 2) + "s";
+      d.style.animationDelay = (-Math.random() * 6) + "s, " + (-Math.random() * 2) + "s";
+      ff.appendChild(d);
+    }
+  })();
+
   /* ---------------- 16:9 fit + fullscreen ---------------- */
   var slide = $("slide");
   function fit() {
@@ -996,6 +1079,9 @@ dialog.modal[open] { display: grid; place-items: center; }
     slide.style.setProperty("--fit", k);
   }
   window.addEventListener("resize", fit); fit();
+  // drifting fog/clouds overflow the slide; never let focus scroll the slide sideways
+  slide.addEventListener("scroll", function () { slide.scrollLeft = 0; slide.scrollTop = 0; });
+  $("slide").querySelector(".page").addEventListener("scroll", function () { this.scrollLeft = 0; this.scrollTop = 0; });
 
   var fsBtn = $("fs-btn"), root = document.documentElement;
   if (document.fullscreenEnabled && root.requestFullscreen) {

@@ -1,6 +1,6 @@
 # Putaran Ajaib Sifat
 
-Permainan web pembelajaran bertema kemasyarakatan (Pesta Komuniti Taman Harmoni).
+Permainan web pembelajaran bertema kemasyarakatan dengan suasana misteri: **Malam Misteri di Taman Harmoni** (kampung waktu malam dengan bulan, tanglung, kabus, kelip-kelip, kelawar dan kucing hitam).
 
 - Murid tekan **PUSING!** untuk memusing roda. Kad keluar mengikut turutan tetap: 1. Rajin, 2. Jujur, 3. Malas, 4. Penakut, 5. Prihatin. Selepas kelima-lima kad, pusingan baharu bermula semula dari Rajin.
 - Bila roda berhenti, kad bergambar terus timbul: **Rajin**, **Jujur**, **Malas**, **Penakut** atau **Prihatin**.
